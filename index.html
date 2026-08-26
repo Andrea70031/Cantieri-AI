@@ -71,6 +71,8 @@ textarea{min-height:90px}
 .statuspill{font-size:12px;padding:4px 8px;border-radius:999px;background:#102431;border:1px solid rgba(55,215,255,.2)}
 #map{height:52vh;min-height:390px;border-radius:18px;border:1px solid rgba(55,215,255,.28);overflow:hidden;box-shadow:0 0 28px rgba(55,215,255,.08)}
 .mapNote{font-size:12px;color:var(--muted);margin:10px 0 14px;line-height:1.45}.mapActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.mapBtn{border:1px solid rgba(55,215,255,.25);background:var(--panel2);color:var(--text);border-radius:10px;padding:9px 11px;font-weight:700}.leaflet-control-attribution{font-size:9px!important}
+
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quick button{border:1px solid rgba(55,215,255,.2);background:var(--panel);color:var(--text);border-radius:14px;padding:16px 10px;font-weight:800}.quick button strong{display:block;color:var(--amber);font-size:20px;margin-bottom:4px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.num.small{font-size:25px}.tag{font-size:11px;padding:5px 8px;border-radius:999px;background:#102431;border:1px solid rgba(55,215,255,.2)}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.detailHero{padding:16px;border-radius:18px;background:linear-gradient(135deg,rgba(55,215,255,.08),rgba(255,157,24,.08));border:1px solid rgba(55,215,255,.2)}.detailHero h2{margin:2px 0 5px;font-size:25px}.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#09131b;border:1px solid rgba(55,215,255,.16);border-radius:14px;padding:12px}.photoGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.photoCard{background:var(--panel);border:1px solid rgba(55,215,255,.16);border-radius:14px;overflow:hidden}.photoCard img{width:100%;height:130px;object-fit:cover;display:block}.photoCard .caption{padding:8px;font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -98,15 +100,17 @@ textarea{min-height:90px}
   let page='home';
   let issueFilter='all';
   let editingSiteId=null;
+  let currentSiteId=null;
 
   function loadDb(){
     try{
       const parsed=JSON.parse(localStorage.getItem('cantiereAI')||'null');
       if(parsed&&parsed.sites&&parsed.acts&&parsed.issues) return parsed;
     }catch(e){}
-    return {sites:[],acts:[],issues:[]};
+    return {sites:[],acts:[],issues:[],photos:[]};
   }
   let db=loadDb();
+  db.photos=db.photos||[];
 
   const app=document.getElementById('app');
   const plus=document.getElementById('plus');
@@ -138,11 +142,13 @@ textarea{min-height:90px}
 
   function setPage(newPage){
     page=newPage;
+    currentSiteId=null;
     Array.from(bottomNav.querySelectorAll('button')).forEach(btn=>btn.classList.toggle('on',btn.dataset.page===page));
     render();
   }
 
   function render(){
+    if(currentSiteId) return renderSiteDetail(currentSiteId);
     if(page==='home') return renderHome();
     if(page==='sites') return renderSites();
     if(page==='acts') return renderActs();
@@ -152,20 +158,15 @@ textarea{min-height:90px}
 
   function renderHome(){
     const openIssues=db.issues.filter(x=>!x.done).length;
+    const critical=db.issues.filter(x=>!x.done&&x.priority==='Critica').length;
     const activeSites=db.sites.filter(x=>x.status!=='Completato').length;
+    const avg=db.sites.length?Math.round(db.sites.reduce((a,x)=>a+clamp(x.progress,0,100),0)/db.sites.length):0;
     header(`
-      <div class="grid">
-        <div class="card"><div class="num">${activeSites}</div><div class="lab">CANTIERI ATTIVI</div></div>
-        <div class="card"><div class="num">${openIssues}</div><div class="lab">PROBLEMI APERTI</div></div>
-      </div>
-      <div class="section">
-        <h3>ATTIVITÀ RECENTI</h3>
-        ${db.acts.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,5).map(x=>`<div class="item"><b>${esc(x.title)}</b><div class="job">COMMESSA ${esc(x.job)}</div><div class="muted">${esc(x.notes)}</div></div>`).join('') || '<div class="empty">Sistema pronto. Premi + per iniziare.</div>'}
-      </div>
-      <div class="section">
-        <h3>STATO CANTIERI</h3>
-        ${db.sites.slice(0,4).map(x=>`<div class="item"><div class="kicker"><b>${esc(x.name)}</b><span class="job">${clamp(x.progress,0,100)}%</span></div><div class="muted">${esc(x.job)} · ${esc(x.client || '')}</div><div class="progress"><i style="width:${clamp(x.progress,0,100)}%"></i></div></div>`).join('') || '<div class="empty">Nessun cantiere.</div>'}
-      </div>
+      <div class="grid"><div class="card"><div class="num">${activeSites}</div><div class="lab">CANTIERI ATTIVI</div></div><div class="card"><div class="num">${openIssues}</div><div class="lab">PROBLEMI APERTI</div></div></div>
+      <div class="section"><h3>CONTROLLO RAPIDO</h3><div class="grid3"><div class="card"><div class="num small">${avg}%</div><div class="lab">AVANZAMENTO</div></div><div class="card"><div class="num small">${critical}</div><div class="lab">CRITICI</div></div><div class="card"><div class="num small">${db.photos.length}</div><div class="lab">FOTO</div></div></div></div>
+      <div class="section"><h3>AZIONI RAPIDE</h3><div class="quick"><button data-quick="site"><strong>+</strong>Nuovo cantiere</button><button data-quick="act"><strong>✓</strong>Nuova attività</button><button data-quick="issue"><strong>⚠</strong>Nuovo problema</button><button data-quick="radar"><strong>◎</strong>Apri Radar</button></div></div>
+      <div class="section"><h3>ATTIVITÀ RECENTI</h3>${db.acts.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,5).map(x=>`<div class="item"><b>${esc(x.title)}</b><div class="job">COMMESSA ${esc(x.job)}</div><div class="muted">${esc(x.notes)}</div></div>`).join('')||'<div class="empty">Sistema pronto. Premi + per iniziare.</div>'}</div>
+      <div class="section"><h3>STATO CANTIERI</h3>${db.sites.slice(0,5).map(x=>{const n=db.issues.filter(i=>i.job===x.job&&!i.done).length;return `<div class="item" data-site-id="${x.id}"><div class="kicker"><b>${esc(x.name)}</b><span class="job">${clamp(x.progress,0,100)}%</span></div><div class="muted">${esc(x.job)} · ${esc(x.client||'')}</div><div class="progress"><i style="width:${clamp(x.progress,0,100)}%"></i></div><div class="tags"><span class="tag">${esc(x.status||'Attivo')}</span>${n?`<span class="tag danger">${n} problemi</span>`:''}</div></div>`}).join('')||'<div class="empty">Nessun cantiere.</div>'}</div>
     `);
   }
 
@@ -182,17 +183,30 @@ textarea{min-height:90px}
     const q=(document.getElementById('siteSearch')?.value || '').toLowerCase().trim();
     const list=db.sites.filter(x=>[x.job,x.name,x.client,x.address,x.status].join(' ').toLowerCase().includes(q));
     document.getElementById('siteList').innerHTML = list.map(x=>`
-      <div class="item">
+      <div class="item" data-site-id="${x.id}">
         <div class="kicker"><b>${esc(x.name)}</b><span class="statuspill">${esc(x.status || 'Attivo')}</span></div>
         <div class="job">COMMESSA ${esc(x.job)}</div>
         <div class="muted">${esc(x.client || '')}${x.address ? ' · ' + esc(x.address) : ''}</div>
         <div class="progress"><i style="width:${clamp(x.progress,0,100)}%"></i></div>
-        <div class="rowBtns">
-          <button class="mini" data-action="edit-site" data-id="${x.id}">Modifica</button>
-          <button class="mini danger" data-action="delete-site" data-id="${x.id}">Elimina</button>
-        </div>
+        <div class="tags"><span class="tag">${clamp(x.progress,0,100)}%</span><span class="tag">${db.acts.filter(a=>a.job===x.job).length} attività</span><span class="tag">${db.issues.filter(i=>i.job===x.job&&!i.done).length} problemi</span></div>
       </div>
     `).join('') || '<div class="empty">Nessun cantiere.</div>';
+  }
+
+  function renderSiteDetail(id){
+    const site=db.sites.find(x=>x.id===id); if(!site){currentSiteId=null;return renderSites()}
+    const acts=db.acts.filter(a=>a.job===site.job).slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+    const issues=db.issues.filter(i=>i.job===site.job).slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+    const photos=db.photos.filter(p=>p.job===site.job).slice().reverse();
+    header(`
+      <button class="mini" data-action="back-sites">← Cantieri</button>
+      <div class="section"><div class="detailHero"><div class="job">COMMESSA ${esc(site.job)}</div><h2>${esc(site.name)}</h2><div class="muted">${esc(site.client||'')} ${site.address?'· '+esc(site.address):''}</div><div class="tags"><span class="tag">${esc(site.status||'Attivo')}</span><span class="tag">${clamp(site.progress,0,100)}%</span></div><div class="progress"><i style="width:${clamp(site.progress,0,100)}%"></i></div></div></div>
+      <div class="section"><h3>RIEPILOGO COMMESSA</h3><div class="split"><div class="stat"><div class="num small">${acts.length}</div><div class="lab">ATTIVITÀ</div></div><div class="stat"><div class="num small">${issues.filter(x=>!x.done).length}</div><div class="lab">PROBLEMI</div></div><div class="stat"><div class="num small">${photos.length}</div><div class="lab">FOTO</div></div><div class="stat"><div class="num small">${clamp(site.progress,0,100)}%</div><div class="lab">AVANZAMENTO</div></div></div></div>
+      <div class="section"><h3>AZIONI CANTIERE</h3><div class="quick"><button data-site-action="act"><strong>✓</strong>Attività</button><button data-site-action="issue"><strong>⚠</strong>Problema</button><button data-site-action="photo"><strong>⌾</strong>Foto</button><button data-site-action="edit"><strong>✎</strong>Modifica</button></div></div>
+      <div class="section"><h3>PROBLEMI</h3>${issues.slice(0,5).map(x=>`<div class="item"><b class="${x.done?'ok':'danger'}">${x.done?'✓':'⚠'} ${esc(x.title)}</b><div class="job">${esc(x.priority)}</div><div class="muted">${esc(x.details)}</div></div>`).join('')||'<div class="empty">Nessun problema.</div>'}</div>
+      <div class="section"><h3>ATTIVITÀ</h3>${acts.slice(0,5).map(x=>`<div class="item"><b>${esc(x.title)}</b><div class="muted">${esc(x.notes)}</div></div>`).join('')||'<div class="empty">Nessuna attività.</div>'}</div>
+      <div class="section"><h3>FOTO CANTIERE</h3><div class="photoGrid">${photos.slice(0,8).map(p=>`<div class="photoCard"><img src="${p.data}"><div class="caption">${esc(p.caption||'Foto cantiere')}</div></div>`).join('')}</div>${photos.length?'':'<div class="empty">Nessuna foto.</div>'}</div>
+    `);
   }
 
   function renderActs(){
@@ -285,7 +299,7 @@ textarea{min-height:90px}
           radius:9,
           color:'#37d7ff',
           weight:2,
-          fillColor:'#ff9d18',
+          fillColor:site.status==='Completato'?'#4ae0a0':site.status==='In pausa'?'#8ca4ae':'#ff9d18',
           fillOpacity:.95
         }).addTo(map);
         marker.bindPopup(`<b>${esc(site.name)}</b><br>Commessa ${esc(site.job)}<br>${esc(site.address)}`);
@@ -306,7 +320,7 @@ textarea{min-height:90px}
           <div class="kicker"><b>${esc(site.name)}</b><span class="job">${esc(site.job)}</span></div>
           <div class="muted">${esc(site.address || 'Indirizzo non inserito')}</div>
           <div class="mapActions">
-            ${site.address ? `<button class="mapBtn" data-gmaps="${encodeURIComponent(site.address)}">Apri in Google Maps</button>` : ''}
+            ${site.address ? `<button class="mapBtn" data-gmaps="${encodeURIComponent(site.address)}">Google Maps</button>` : ''}<button class="mapBtn" data-site-id="${site.id}">Apri scheda</button>
           </div>
         </div>`).join('') || '<div class="empty">Inserisci almeno un cantiere per popolare il radar.</div>'}
       </div>`;
@@ -342,23 +356,24 @@ textarea{min-height:90px}
         <option ${site?.status==='Completato'?'selected':''}>Completato</option>
       </select>
       <input id="fProgress" type="number" min="0" max="100" placeholder="Avanzamento %" value="${clamp(site?.progress,0,100)}">
+      <textarea id="fSiteNotes" placeholder="Note generali cantiere">${esc(site?.notes||'')}</textarea>
       <button class="save" data-save="site">SALVA</button>
     `);
   }
 
-  function showActForm(){
+  function showActForm(job=''){
     openSheet('NUOVA ATTIVITÀ', `
       <input id="fTitle" placeholder="Attività">
-      <input id="fJob" placeholder="Numero commessa">
+      <input id="fJob" placeholder="Numero commessa" value="${esc(job)}">
       <textarea id="fNotes" placeholder="Note"></textarea>
       <button class="save" data-save="act">SALVA</button>
     `);
   }
 
-  function showIssueForm(){
+  function showIssueForm(job=''){
     openSheet('NUOVO PROBLEMA', `
       <input id="fTitle" placeholder="Problema">
-      <input id="fJob" placeholder="Numero commessa">
+      <input id="fJob" placeholder="Numero commessa" value="${esc(job)}">
       <select id="fPriority">
         <option>Media</option>
         <option>Alta</option>
@@ -367,6 +382,14 @@ textarea{min-height:90px}
       <textarea id="fDetails" placeholder="Dettagli"></textarea>
       <button class="save" data-save="issue">SALVA</button>
     `);
+  }
+
+  function showPhotoForm(job=''){
+    openSheet('FOTO CANTIERE', `<input id="fPhotoJob" placeholder="Numero commessa" value="${esc(job)}"><input id="fPhoto" type="file" accept="image/*" capture="environment"><input id="fCaption" placeholder="Descrizione foto"><button class="save" data-save="photo">SALVA FOTO</button>`);
+  }
+  function savePhoto(){
+    const file=document.getElementById('fPhoto').files?.[0]; if(!file){alert('Seleziona o scatta una foto.');return}
+    const reader=new FileReader(); reader.onload=()=>{db.photos.push({id:uid(),job:document.getElementById('fPhotoJob').value.trim(),caption:document.getElementById('fCaption').value.trim(),data:reader.result,date:new Date().toISOString()});saveDb();closeSheet();render()}; reader.readAsDataURL(file);
   }
 
   function saveSite(){
@@ -380,7 +403,10 @@ textarea{min-height:90px}
       client: document.getElementById('fClient').value.trim(),
       address: document.getElementById('fAddress').value.trim(),
       status: document.getElementById('fStatus').value,
-      progress: clamp(document.getElementById('fProgress').value,0,100)
+      progress: clamp(document.getElementById('fProgress').value,0,100),
+      notes: document.getElementById('fSiteNotes').value.trim(),
+      lat: editingSiteId ? db.sites.find(x=>x.id===editingSiteId)?.lat ?? null : null,
+      lon: editingSiteId ? db.sites.find(x=>x.id===editingSiteId)?.lon ?? null : null
     };
     if(editingSiteId){
       const i=db.sites.findIndex(x=>x.id===editingSiteId);
@@ -442,6 +468,14 @@ textarea{min-height:90px}
   sheet.addEventListener('click', (e)=>{ if(e.target===sheet) closeSheet(); });
 
   document.addEventListener('click', (e)=>{
+    const quick=e.target.closest('[data-quick]');
+    if(quick){const t=quick.dataset.quick;if(t==='site')showSiteForm(null);if(t==='act')showActForm();if(t==='issue')showIssueForm();if(t==='radar')setPage('radar');return}
+
+    const siteAction=e.target.closest('[data-site-action]');
+    if(siteAction&&currentSiteId){const site=db.sites.find(x=>x.id===currentSiteId);if(site){if(siteAction.dataset.siteAction==='act')showActForm(site.job);if(siteAction.dataset.siteAction==='issue')showIssueForm(site.job);if(siteAction.dataset.siteAction==='photo')showPhotoForm(site.job);if(siteAction.dataset.siteAction==='edit')showSiteForm(site)}return}
+
+    const siteCard=e.target.closest('[data-site-id]');
+    if(siteCard&&!e.target.closest('[data-gmaps]')){currentSiteId=siteCard.dataset.siteId;render();return}
     const open=e.target.closest('[data-open-form]');
     if(open){
       if(open.dataset.openForm==='site') showSiteForm(null);
@@ -455,6 +489,7 @@ textarea{min-height:90px}
       if(save.dataset.save==='site') saveSite();
       if(save.dataset.save==='act') saveAct();
       if(save.dataset.save==='issue') saveIssue();
+      if(save.dataset.save==='photo') savePhoto();
       return;
     }
 
@@ -462,6 +497,7 @@ textarea{min-height:90px}
     if(!actionBtn) return;
     const id=actionBtn.dataset.id;
 
+    if(actionBtn.dataset.action==='back-sites'){currentSiteId=null;setPage('sites');return;}
     if(actionBtn.dataset.action==='edit-site'){
       const site=db.sites.find(x=>x.id===id);
       if(site) showSiteForm(site);
