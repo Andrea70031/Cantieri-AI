@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#091017"><link rel="manifest" href="manifest.json">
+<title>CantiereAI</title>
+<style>
+:root{--bg:#091017;--p:#111b24;--line:#253643;--a:#ff9d18;--c:#28c9e8;--t:#f4f7f9;--m:#8fa0ac}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+main{max-width:720px;margin:auto;padding:calc(env(safe-area-inset-top) + 18px) 16px 110px;min-height:100vh}
+header{display:flex;justify-content:space-between;align-items:center}.sub{color:var(--c);font-size:10px;letter-spacing:2px;font-weight:800}h1{margin:3px 0;font-size:30px} .logo{color:var(--a);font-size:32px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}.card,.item,.empty{background:var(--p);border:1px solid var(--line);border-radius:17px;padding:16px}
+.num{font-size:34px;font-weight:900}.lab{font-size:10px;color:var(--m);font-weight:800}.section{margin-top:22px}.section h3{font-size:11px;color:var(--c);letter-spacing:1.5px}
+.item{margin:9px 0}.job{color:var(--a);font-size:11px;font-weight:800}.muted{color:var(--m);font-size:13px;margin-top:4px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:#0c141be8;backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:7px 0 calc(env(safe-area-inset-bottom) + 6px)}
+nav button{border:0;background:none;color:var(--m);padding:9px 13px;font-size:10px}nav .on{color:var(--a)}
+#plus{position:fixed;right:20px;bottom:82px;width:58px;height:58px;border-radius:50%;border:0;background:var(--a);font-size:29px;font-weight:700}
+input,textarea,select{width:100%;padding:14px;margin:5px 0 12px;border-radius:12px;border:1px solid var(--line);background:#080e13;color:white;font-size:16px}
+textarea{min-height:90px}.save{width:100%;border:0;border-radius:13px;background:var(--a);padding:15px;font-weight:900;font-size:16px}
+</style></head>
+<body><main id="app"></main><button id="plus" onclick="form()">+</button>
+<nav><button class="on" onclick="go('home',this)">⌂<br>HOME</button><button onclick="go('sites',this)">▣<br>CANTIERI</button><button onclick="go('acts',this)">✓<br>ATTIVITÀ</button><button onclick="go('issues',this)">⚠<br>PROBLEMI</button></nav>
+<script>
+let page='home',db=JSON.parse(localStorage.getItem('cantiereAI')||'{"sites":[],"acts":[],"issues":[]}');
+const S=()=>localStorage.setItem('cantiereAI',JSON.stringify(db));
+const E=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function head(x){app.innerHTML='<header><div><div class="sub">CONTROL CENTER</div><h1>CANTIERE AI</h1></div><div class="logo">◉</div></header>'+x}
+function go(p,b){page=p;document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');plus.style.display='block';render()}
+function render(){
+if(page==='home')head(`<div class="grid"><div class="card"><div class="num">${db.sites.length}</div><div class="lab">CANTIERI</div></div><div class="card"><div class="num">${db.issues.length}</div><div class="lab">PROBLEMI</div></div></div><div class="section"><h3>ATTIVITÀ RECENTI</h3>${db.acts.slice(-5).reverse().map(x=>`<div class="item"><b>${E(x.title)}</b><div class="job">COMMESSA ${E(x.job)}</div><div class="muted">${E(x.notes)}</div></div>`).join('')||'<div class="empty">Sistema pronto. Premi + per iniziare.</div>'}</div>`);
+if(page==='sites')head(`<div class="section"><h3>CANTIERI</h3>${db.sites.map(x=>`<div class="item"><b>${E(x.name)}</b><div class="job">COMMESSA ${E(x.job)}</div><div class="muted">${E(x.client)} · ${E(x.address)}</div></div>`).join('')||'<div class="empty">Nessun cantiere</div>'}</div>`);
+if(page==='acts')head(`<div class="section"><h3>ATTIVITÀ</h3>${db.acts.slice().reverse().map(x=>`<div class="item"><b>${E(x.title)}</b><div class="job">${E(x.job)}</div><div class="muted">${E(x.notes)}</div></div>`).join('')||'<div class="empty">Nessuna attività</div>'}</div>`);
+if(page==='issues')head(`<div class="section"><h3>PROBLEMI</h3>${db.issues.slice().reverse().map(x=>`<div class="item"><b>⚠ ${E(x.title)}</b><div class="job">${E(x.job)} · ${E(x.priority)}</div><div class="muted">${E(x.details)}</div></div>`).join('')||'<div class="empty">Nessun problema</div>'}</div>`);
+}
+function form(){let f=page==='sites'?'<input id="job" placeholder="Numero commessa"><input id="name" placeholder="Nome cantiere"><input id="client" placeholder="Cliente"><input id="address" placeholder="Indirizzo">':page==='acts'?'<input id="title" placeholder="Attività"><input id="job" placeholder="Numero commessa"><textarea id="notes" placeholder="Note"></textarea>':'<input id="title" placeholder="Problema"><input id="job" placeholder="Numero commessa"><select id="priority"><option>Media</option><option>Alta</option><option>Critica</option></select><textarea id="details" placeholder="Dettagli"></textarea>';head('<div class="section"><h3>NUOVO INSERIMENTO</h3>'+f+'<button class="save" onclick="add()">SALVA</button></div>');plus.style.display='none'}
+function add(){if(page==='sites'){db.sites.push({job:job.value,name:name.value,client:client.value,address:address.value})}else if(page==='acts'){db.acts.push({title:title.value,job:job.value,notes:notes.value})}else{db.issues.push({title:title.value,job:job.value,priority:priority.value,details:details.value})}S();plus.style.display='block';render()}
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');render();
+</script></body></html>
