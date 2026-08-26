@@ -1,251 +1,74 @@
 <!doctype html>
 <html lang="it">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071017">
-<title>CantiereAI V4.1</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071017"><title>CantiereAI Cloud</title>
 <style>
-:root{--bg:#071017;--panel:#0d1821;--panel2:#102431;--cyan:#37d7ff;--amber:#ff9d18;--text:#eef8fb;--muted:#8ca4ae;--red:#ff5e64;--green:#4ae0a0;--line:rgba(55,215,255,.22)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:linear-gradient(rgba(55,215,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(55,215,255,.16) 1px,transparent 1px);background-size:32px 32px}
-main{max-width:760px;margin:auto;padding:calc(env(safe-area-inset-top) + 18px) 16px 124px;position:relative;z-index:1;min-height:100vh}
-header{display:flex;justify-content:space-between;align-items:center}.brand small{color:var(--cyan);font-size:10px;letter-spacing:3px;font-weight:900}.brand h1{margin:4px 0 0;font-size:30px}.core{width:54px;height:54px;border:2px solid var(--amber);border-radius:50%;display:grid;place-items:center;box-shadow:0 0 24px rgba(255,157,24,.25)}.core:after{content:"";width:28px;height:28px;border-radius:50%;background:var(--amber);box-shadow:0 0 22px rgba(255,157,24,.55)}
-.hudline{height:1px;background:linear-gradient(90deg,var(--cyan),transparent);margin:18px 0}.section{margin-top:22px}.section h3{font-size:14px;color:var(--cyan);letter-spacing:3px}.card,.item,.empty,.notice{background:linear-gradient(180deg,rgba(16,36,49,.94),rgba(10,24,33,.94));border:1px solid var(--line);border-radius:18px;padding:16px}.item{margin:9px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.num{font-size:34px;font-weight:900}.lab{font-size:10px;color:var(--muted);font-weight:900;letter-spacing:1px}.job{color:var(--amber);font-size:12px;font-weight:900}.muted{color:var(--muted);font-size:14px;margin-top:4px;line-height:1.4}.kicker{display:flex;justify-content:space-between;gap:10px;align-items:center}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:var(--panel2);border:1px solid var(--line)}.role{color:var(--cyan)}.danger{color:var(--red)}.ok{color:var(--green)}
-button,input,select{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}.save,.ghost,.mini{border-radius:12px;padding:12px 14px;font-weight:800}.save{width:100%;border:0;background:linear-gradient(90deg,#ff8d0a,#ffb22d);color:#111}.ghost{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);margin-top:8px}.mini{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:8px 10px}.rowBtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-input,select{width:100%;padding:14px;margin:5px 0 12px;border-radius:12px;border:1px solid var(--line);background:#061019;color:white;font-size:16px}
-nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:#09131bea;backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:7px 0 calc(env(safe-area-inset-bottom) + 6px);z-index:20}nav button{border:0;background:none;color:var(--muted);padding:9px 12px;font-size:11px;font-weight:700}nav .on{color:var(--amber)}
-#plus{position:fixed;right:20px;bottom:88px;width:62px;height:62px;border-radius:50%;border:1px solid #ffbd5b;background:var(--amber);font-size:30px;font-weight:800;z-index:21;box-shadow:0 0 24px rgba(255,157,24,.35)}
-#sheet{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;z-index:40}#sheet.open{display:flex}.sheetBox{width:100%;max-height:90vh;overflow:auto;background:#09141c;border-radius:26px 26px 0 0;border-top:1px solid var(--cyan);padding:18px 16px calc(env(safe-area-inset-bottom) + 20px)}.sheetTop{display:flex;justify-content:space-between;align-items:center}.sheetTop b{color:var(--cyan);font-size:18px;letter-spacing:1px}.close{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 11px}
-.usercard{display:flex;align-items:center;gap:12px}.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line);font-weight:900;color:var(--amber)}.grow{flex:1}.access{padding:10px 12px;border-radius:14px;background:#09131b;border:1px solid var(--line);margin-top:8px}.access b{font-size:13px}.access small{display:block;color:var(--muted);margin-top:3px}.notice{border-color:rgba(255,157,24,.3);background:rgba(255,157,24,.08);color:#ffd797;font-size:13px}
-.toast{position:fixed;left:50%;bottom:135px;transform:translateX(-50%);z-index:80;background:#0c1b24;border:1px solid var(--cyan);border-radius:12px;padding:11px 15px;display:none;max-width:90%;text-align:center;box-shadow:0 10px 30px #0008}.toast.show{display:block}
-</style>
-</head>
+:root{--bg:#071017;--p:#0d1821;--p2:#102431;--c:#37d7ff;--a:#ff9d18;--t:#eef8fb;--m:#8ca4ae;--r:#ff5e64;--g:#4ae0a0;--l:rgba(55,215,255,.22)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.07;background-image:linear-gradient(rgba(55,215,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(55,215,255,.16) 1px,transparent 1px);background-size:32px 32px}
+main{max-width:760px;margin:auto;padding:calc(env(safe-area-inset-top) + 18px) 16px 125px;position:relative;z-index:1;min-height:100vh}
+header{display:flex;justify-content:space-between;align-items:center}.brand small{color:var(--c);font-size:10px;letter-spacing:3px;font-weight:900}.brand h1{margin:4px 0 0;font-size:30px}.core{width:54px;height:54px;border:2px solid var(--a);border-radius:50%;display:grid;place-items:center;box-shadow:0 0 24px #ff9d1840}.core:after{content:"";width:28px;height:28px;border-radius:50%;background:var(--a);box-shadow:0 0 22px #ff9d1888}
+.line{height:1px;background:linear-gradient(90deg,var(--c),transparent);margin:18px 0}.section{margin-top:22px}.section h3{font-size:14px;color:var(--c);letter-spacing:3px}
+.card,.item,.empty{background:linear-gradient(180deg,#102431ee,#0a1821ee);border:1px solid var(--l);border-radius:18px;padding:16px}.item{margin:9px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.num{font-size:34px;font-weight:900}.lab{font-size:10px;color:var(--m);font-weight:900;letter-spacing:1px}.job{color:var(--a);font-size:12px;font-weight:900}.muted{color:var(--m);font-size:14px;margin-top:4px;line-height:1.4}.k{display:flex;justify-content:space-between;gap:10px;align-items:center}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:var(--p2);border:1px solid var(--l)}.role{color:var(--c)}.danger{color:var(--r)}.ok{color:var(--g)}.progress{height:8px;background:#071017;border-radius:999px;margin-top:10px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#0bb5d6,var(--c))}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.save,.ghost,.mini{border-radius:12px;padding:12px 14px;font-weight:800}.save{width:100%;border:0;background:linear-gradient(90deg,#ff8d0a,#ffb22d);color:#111}.ghost{width:100%;border:1px solid var(--l);background:var(--p);color:var(--t);margin-top:8px}.mini{border:1px solid var(--l);background:var(--p2);color:var(--t);padding:8px 10px}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+input,select,textarea{width:100%;padding:14px;margin:5px 0 12px;border-radius:12px;border:1px solid var(--l);background:#061019;color:white;font-size:16px}textarea{min-height:84px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:#09131bea;backdrop-filter:blur(16px);border-top:1px solid var(--l);padding:7px 0 calc(env(safe-area-inset-bottom) + 6px);z-index:20}nav button{border:0;background:none;color:var(--m);padding:9px 12px;font-size:11px;font-weight:700}nav .on{color:var(--a)}
+#plus{position:fixed;right:20px;bottom:88px;width:62px;height:62px;border-radius:50%;border:1px solid #ffbd5b;background:var(--a);font-size:30px;font-weight:800;z-index:21;box-shadow:0 0 24px #ff9d1855}
+#sheet{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;z-index:40}#sheet.open{display:flex}.box{width:100%;max-height:90vh;overflow:auto;background:#09141c;border-radius:26px 26px 0 0;border-top:1px solid var(--c);padding:18px 16px calc(env(safe-area-inset-bottom) + 20px)}.top{display:flex;justify-content:space-between;align-items:center}.top b{color:var(--c)}.close{background:var(--p2);color:var(--t);border:1px solid var(--l);border-radius:10px;padding:8px 11px}
+.login{max-width:430px;margin:8vh auto}.login .core{margin:0 auto 14px;width:76px;height:76px}.center{text-align:center}.tabs{display:flex;gap:7px;margin:12px 0}.tabs button{flex:1;border:1px solid var(--l);border-radius:10px;background:var(--p);color:var(--m);padding:10px}.tabs .active{color:#111;background:var(--a)}
+.toast{position:fixed;left:50%;bottom:135px;transform:translateX(-50%);z-index:80;background:#0c1b24;border:1px solid var(--c);border-radius:12px;padding:11px 15px;display:none;max-width:90%;text-align:center}.toast.show{display:block}
+@media(max-width:390px){nav button{padding:9px 9px;font-size:10.5px}}
+</style></head>
 <body>
-<main id="app"></main>
-<button id="plus" aria-label="Aggiungi">+</button>
-<nav id="nav">
-  <button class="on" data-page="home">⌂<br>HOME</button>
-  <button data-page="sites">▣<br>CANTIERI</button>
-  <button data-page="team">◉<br>TEAM</button>
-  <button data-page="profile">⚙<br>PROFILO</button>
-</nav>
-<div id="sheet"><div class="sheetBox"><div class="sheetTop"><b id="sheetTitle">NUOVO</b><button class="close" id="closeSheet">Chiudi</button></div><div id="sheetBody"></div></div></div>
-<div id="toast" class="toast"></div>
-
+<main id="app"><div class="center muted" style="padding-top:40vh">CONNESSIONE CLOUD…</div></main>
+<button id="plus" style="display:none">+</button>
+<nav id="nav" style="display:none"><button class="on" data-p="home">⌂<br>HOME</button><button data-p="sites">▣<br>CANTIERI</button><button data-p="team">◉<br>TEAM</button><button data-p="profile">⚙<br>PROFILO</button></nav>
+<div id="sheet"><div class="box"><div class="top"><b id="st"></b><button class="close" id="close">Chiudi</button></div><div id="sb"></div></div></div><div id="toast" class="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(()=>{
-'use strict';
-
-const roles=['Project Manager','Capocantiere','Montatore','Ufficio tecnico','Direzione lavori','Cliente','Solo visualizzazione'];
-let page='home';
-
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-
-function loadDb(){
-  let d=null;
-  try{d=JSON.parse(localStorage.getItem('cantiereAI_v41')||'null')}catch(e){}
-  if(!d){
-    try{
-      const old=JSON.parse(localStorage.getItem('cantiereAI_v4')||'null');
-      if(old)d=old;
-    }catch(e){}
-  }
-  if(!d){
-    try{
-      const old=JSON.parse(localStorage.getItem('cantiereAI')||'null');
-      if(old){
-        d={sites:(old.sites||[]).map(s=>({id:s.id||uid(),job:s.job||'',name:s.name||'',client:s.client||''})),users:[],memberships:[],currentUser:{id:'me',name:'Andrea',email:'',role:'Amministratore'}};
-      }
-    }catch(e){}
-  }
-  if(!d)d={sites:[],users:[],memberships:[],currentUser:{id:'me',name:'Andrea',email:'',role:'Amministratore'}};
-  d.sites=d.sites||[];d.users=d.users||[];d.memberships=d.memberships||[];d.currentUser=d.currentUser||{id:'me',name:'Andrea',email:'',role:'Amministratore'};
-  d.sites.forEach(s=>s.id=s.id||uid());
-  d.users.forEach(u=>u.id=u.id||uid());
-  d.memberships.forEach(m=>m.id=m.id||uid());
-  return d;
-}
-let db=loadDb();
-const persist=()=>localStorage.setItem('cantiereAI_v41',JSON.stringify(db));
-
-const app=document.getElementById('app'),nav=document.getElementById('nav'),plus=document.getElementById('plus'),sheet=document.getElementById('sheet'),sheetTitle=document.getElementById('sheetTitle'),sheetBody=document.getElementById('sheetBody'),toast=document.getElementById('toast');
-
-function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)}
-function head(content){app.innerHTML=`<header><div class="brand"><small>JARVIS CONSTRUCTION OS</small><h1>CANTIERE AI</h1></div><div class="core"></div></header><div class="hudline"></div>${content}`}
-function openSheet(title,html){sheetTitle.textContent=title;sheetBody.innerHTML=html;sheet.classList.add('open')}
-function closeSheet(){sheet.classList.remove('open')}
-function setPage(p){page=p;nav.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('on',b.dataset.page===p));render()}
-
+(async()=>{
+const supa=window.supabase.createClient('https://frehflwcnghrmqpzbpno.supabase.co','sb_publishable_SuYaTiqS5F9OifFyuadFEA_xkAqQujw',{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const roles=['Amministratore','Project Manager','Capocantiere','Montatore','Ufficio tecnico','Direzione lavori','Cliente','Solo visualizzazione'];
+const app=document.getElementById('app'),nav=document.getElementById('nav'),plus=document.getElementById('plus'),sheet=document.getElementById('sheet'),st=document.getElementById('st'),sb=document.getElementById('sb'),toast=document.getElementById('toast');
+let page='home',session=null,profile=null,sites=[],members=[],detail=null;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const msg=t=>{toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2100)};
+const open=(t,h)=>{st.textContent=t;sb.innerHTML=h;sheet.classList.add('open')};const close=()=>sheet.classList.remove('open');
+function head(h){app.innerHTML=`<header><div class="brand"><small>JARVIS CONSTRUCTION OS · CLOUD</small><h1>CANTIERE AI</h1></div><div class="core"></div></header><div class="line"></div>${h}`}
+function role(id){return members.find(x=>x.site_id===id&&x.user_id===session.user.id)?.role||''} function manage(id){return ['Amministratore','Project Manager'].includes(role(id))}
+async function load(){let [p,s,m]=await Promise.all([supa.from('profiles').select('*').eq('id',session.user.id).maybeSingle(),supa.from('sites').select('*').order('created_at',{ascending:false}),supa.from('site_members').select('*')]);profile=p.data||{full_name:'',email:session.user.email};sites=s.data||[];members=m.data||[]}
+function login(mode='login'){nav.style.display='none';plus.style.display='none';app.innerHTML=`<div class="login"><div class="center"><div class="core"></div><div class="job">CANTIEREAI CLOUD</div><h1>ACCESSO</h1></div><div class="item"><div class="tabs"><button class="${mode==='login'?'active':''}" data-tab="login">Accedi</button><button class="${mode==='signup'?'active':''}" data-tab="signup">Registrati</button></div>${mode==='signup'?'<input id="an" placeholder="Nome e cognome">':''}<input id="ae" type="email" placeholder="Email"><input id="ap" type="password" placeholder="Password (min. 6 caratteri)"><button class="save" data-auth="${mode}">${mode==='login'?'ACCEDI':'CREA ACCOUNT'}</button><div class="muted" style="margin-top:10px">${mode==='signup'?'Se sei stato invitato usa la stessa email dell’invito.':'Accesso al database cloud CantiereAI.'}</div></div></div>`}
+function setPage(p){page=p;detail=null;nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));render()}
 function render(){
-  if(page==='home')return renderHome();
-  if(page==='sites')return renderSites();
-  if(page==='team')return renderTeam();
-  if(page==='profile')return renderProfile();
+ if(!session)return login();
+ if(detail)return siteDetail(detail);
+ if(page==='home')return head(`<div class="grid"><div class="card"><div class="num">${sites.length}</div><div class="lab">CANTIERI VISIBILI</div></div><div class="card"><div class="num">${sites.filter(x=>manage(x.id)).length}</div><div class="lab">CANTIERI GESTITI</div></div></div><div class="section"><h3>IDENTITÀ CLOUD</h3><div class="item"><b>${esc(profile?.full_name||session.user.email)}</b><div class="muted">${esc(session.user.email)}</div><span class="pill ok">SYNC ATTIVO</span></div></div><div class="section"><h3>I TUOI CANTIERI</h3>${sites.map(s=>`<div class="item" data-site="${s.id}"><div class="k"><b>${esc(s.name)}</b><span class="job">${esc(s.job_number)}</span></div><div class="muted">${esc(s.client||'')}</div><div class="progress"><i style="width:${s.progress||0}%"></i></div><div class="muted">Ruolo: <span class="role">${esc(role(s.id))}</span></div></div>`).join('')||'<div class="empty">Nessun cantiere.</div>'}</div>`);
+ if(page==='sites')return head(`<div class="section"><h3>CANTIERI CLOUD</h3>${sites.map(s=>`<div class="item"><div class="k"><b>${esc(s.name)}</b><span class="job">${esc(s.job_number)}</span></div><div class="muted">${esc(s.client||'')} · ${esc(s.address||'')}</div><div class="progress"><i style="width:${s.progress||0}%"></i></div><div class="row"><button class="mini" data-site="${s.id}">Apri</button>${manage(s.id)?`<button class="mini" data-team="${s.id}">TEAM ACCESS</button>`:''}</div></div>`).join('')||'<div class="empty">Premi + per creare il primo cantiere.</div>'}</div>`);
+ if(page==='team')return teamPage();
+ if(page==='profile')return head(`<div class="section"><h3>PROFILO CLOUD</h3><div class="item"><input id="pn" value="${esc(profile?.full_name||'')}" placeholder="Nome e cognome"><input value="${esc(session.user.email)}" disabled><button class="save" data-profile>SALVA</button><button class="ghost danger" data-logout>ESCI</button></div></div>`);
 }
-
-function renderHome(){
-  head(`
-    <div class="grid">
-      <div class="card"><div class="num">${db.sites.length}</div><div class="lab">CANTIERI</div></div>
-      <div class="card"><div class="num">${db.users.length}</div><div class="lab">UTENTI TEAM</div></div>
-    </div>
-    <div class="section"><h3>ACCESSO UTENTE</h3>
-      <div class="item usercard"><div class="avatar">${esc((db.currentUser.name||'U').slice(0,1).toUpperCase())}</div><div class="grow"><b>${esc(db.currentUser.name||'Utente')}</b><div class="muted">${esc(db.currentUser.role||'Amministratore')}</div></div><span class="pill role">ONLINE</span></div>
-    </div>
-    <div class="section"><h3>CANTIERI</h3>
-      ${db.sites.map(s=>`<div class="item"><div class="kicker"><b>${esc(s.name)}</b><span class="job">${esc(s.job)}</span></div><div class="muted">${esc(s.client||'')}</div><div class="muted">${db.memberships.filter(m=>m.siteId===s.id).length} utenti con accesso</div></div>`).join('')||'<div class="empty">Nessun cantiere.</div>'}
-    </div>
-    <div class="notice">Gli inviti di questa versione vengono creati e condivisi dal tuo iPhone, ma non danno ancora accesso reale da un altro telefono: per quello serve il backend cloud.</div>
-  `)
-}
-
-function renderSites(){
-  head(`<div class="section"><h3>CANTIERI & ACCESSI</h3>
-    ${db.sites.map(s=>`<div class="item"><div class="kicker"><b>${esc(s.name)}</b><span class="job">${esc(s.job)}</span></div><div class="muted">${esc(s.client||'')}</div><div class="rowBtns"><button class="mini" data-action="manage-site" data-id="${s.id}">TEAM ACCESS (${db.memberships.filter(m=>m.siteId===s.id).length})</button><button class="mini danger" data-action="delete-site" data-id="${s.id}">Elimina</button></div></div>`).join('')||'<div class="empty">Nessun cantiere. Premi + per crearne uno.</div>'}
-  </div>`)
-}
-
-function renderTeam(){
-  head(`<div class="section"><h3>TEAM DIRECTORY</h3>
-    ${db.users.map(u=>`<div class="item usercard"><div class="avatar">${esc((u.name||u.email||'U').slice(0,1).toUpperCase())}</div><div class="grow"><b>${esc(u.name||u.email)}</b><div class="muted">${esc(u.email)}</div><div class="muted">${db.memberships.filter(m=>m.userId===u.id).length} cantieri assegnati</div></div><button class="mini" data-action="user-access" data-id="${u.id}">Accessi</button></div>`).join('')||'<div class="empty">Nessun utente. Premi + per creare un invito.</div>'}
-  </div>`)
-}
-
-function renderProfile(){
-  head(`<div class="section"><h3>PROFILO UTENTE</h3><div class="item">
-    <label class="muted">Nome</label><input id="pName" value="${esc(db.currentUser.name||'')}">
-    <label class="muted">Email</label><input id="pEmail" type="email" value="${esc(db.currentUser.email||'')}">
-    <button class="save" data-action="save-profile">SALVA PROFILO</button>
-  </div></div>`)
-}
-
-function showSiteForm(){
-  openSheet('NUOVO CANTIERE',`<input id="sJob" placeholder="Numero commessa"><input id="sName" placeholder="Nome cantiere"><input id="sClient" placeholder="Cliente"><button class="save" data-save="site">SALVA CANTIERE</button>`)
-}
-
-function showInviteForm(siteId=''){
-  if(!db.sites.length){showToast('Crea prima un cantiere');setPage('sites');return}
-  openSheet('INVITA UTENTE',`
-    <input id="uName" placeholder="Nome utente">
-    <input id="uEmail" type="email" placeholder="Email">
-    ${siteId?`<input type="hidden" id="inviteSiteId" value="${siteId}">`:`<select id="inviteSiteId"><option value="">Seleziona cantiere</option>${db.sites.map(s=>`<option value="${s.id}">${esc(s.job)} — ${esc(s.name)}</option>`).join('')}</select>`}
-    <select id="uRole">${roles.map(r=>`<option>${r}</option>`).join('')}</select>
-    <button class="save" data-save="invite">CREA E CONDIVIDI INVITO</button>
-  `)
-}
-
-function showSiteAccess(siteId){
-  const s=db.sites.find(x=>x.id===siteId);if(!s)return;
-  const ms=db.memberships.filter(m=>m.siteId===siteId);
-  openSheet('TEAM ACCESS',`
-    <div class="item"><div class="job">COMMESSA ${esc(s.job)}</div><b>${esc(s.name)}</b></div>
-    ${ms.map(m=>{const u=db.users.find(x=>x.id===m.userId);return u?`<div class="access"><b>${esc(u.name||u.email)}</b><small>${esc(u.email)}</small><small class="role">${esc(m.role)}</small><div class="rowBtns"><button class="mini" data-change-role="${m.id}">Cambia ruolo</button><button class="mini danger" data-remove-member="${m.id}">Rimuovi</button></div></div>`:''}).join('')||'<div class="empty">Nessun utente assegnato.</div>'}
-    <button class="save" data-invite-site="${s.id}" style="margin-top:12px">+ INVITA UTENTE</button>
-  `)
-}
-
-function showUserAccess(userId){
-  const u=db.users.find(x=>x.id===userId);if(!u)return;
-  const ms=db.memberships.filter(m=>m.userId===userId);
-  openSheet('ACCESSI UTENTE',`
-    <div class="item"><b>${esc(u.name||u.email)}</b><div class="muted">${esc(u.email)}</div></div>
-    ${ms.map(m=>{const s=db.sites.find(x=>x.id===m.siteId);return s?`<div class="access"><b>${esc(s.name)}</b><small>Commessa ${esc(s.job)}</small><small class="role">${esc(m.role)}</small></div>`:''}).join('')||'<div class="empty">Nessun accesso.</div>'}
-  `)
-}
-
-function showRoleForm(id){
-  const m=db.memberships.find(x=>x.id===id);if(!m)return;
-  openSheet('CAMBIA RUOLO',`<select id="newRole">${roles.map(r=>`<option ${r===m.role?'selected':''}>${r}</option>`).join('')}</select><input type="hidden" id="membershipId" value="${m.id}"><button class="save" data-save="role">SALVA RUOLO</button>`)
-}
-
-async function shareInvite(user,site,role){
-  const text=`CantiereAI — Invito cantiere\nCommessa: ${site.job}\nCantiere: ${site.name}\nRuolo: ${role}\nUtente: ${user.email}\n\nApri CantiereAI: https://andrea70031.github.io/Cantieri-AI/`;
-  try{
-    if(navigator.share){await navigator.share({title:'Invito CantiereAI',text});showToast('Invito condiviso')}
-    else if(navigator.clipboard){await navigator.clipboard.writeText(text);showToast('Invito copiato negli appunti')}
-    else{alert(text)}
-  }catch(e){showToast('Invito creato')}
-}
-
-nav.addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)setPage(b.dataset.page)});
-plus.addEventListener('click',()=>{if(page==='sites')showSiteForm();else if(page==='team')showInviteForm();else openSheet('AZIONE RAPIDA','<button class="save" data-open="site">+ Nuovo cantiere</button><button class="ghost" data-open="invite">+ Invita utente</button>')});
-document.getElementById('closeSheet').addEventListener('click',closeSheet);
-sheet.addEventListener('click',e=>{if(e.target===sheet)closeSheet()});
-
+async function teamPage(){const ids=sites.filter(x=>manage(x.id)).map(x=>x.id);if(!ids.length)return head('<div class="empty">Non gestisci ancora nessun cantiere.</div>');let r=await supa.from('site_members').select('*').in('site_id',ids),rows=r.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};if(uids.length){let p=await supa.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}head(`<div class="section"><h3>TEAM DIRECTORY</h3>${rows.map(x=>{let p=pm[x.user_id]||{},s=sites.find(z=>z.id===x.site_id);return `<div class="item"><div class="k"><b>${esc(p.full_name||p.email||'Utente')}</b><span class="pill role">${esc(x.role)}</span></div><div class="muted">${esc(p.email||'')}</div><div class="job">${esc(s?.job_number||'')} · ${esc(s?.name||'')}</div></div>`}).join('')}</div>`) }
+async function siteDetail(id){let s=sites.find(x=>x.id===id);if(!s){detail=null;return render()}let [a,i]=await Promise.all([supa.from('activities').select('*').eq('site_id',id).order('created_at',{ascending:false}),supa.from('issues').select('*').eq('site_id',id).order('created_at',{ascending:false})]);head(`<button class="mini" data-back>← Cantieri</button><div class="section"><div class="item"><div class="job">COMMESSA ${esc(s.job_number)}</div><h2>${esc(s.name)}</h2><div class="muted">${esc(s.client||'')} · ${esc(s.address||'')}</div><div class="muted">Ruolo: <span class="role">${esc(role(id))}</span></div><div class="progress"><i style="width:${s.progress||0}%"></i></div></div></div><div class="section"><h3>AZIONI</h3><div class="grid"><button class="ghost" data-act="${id}">+ Attività</button><button class="ghost" data-issue="${id}">+ Problema</button>${manage(id)?`<button class="ghost" data-team="${id}">◉ Team Access</button><button class="ghost" data-edit="${id}">✎ Modifica</button>`:''}</div></div><div class="section"><h3>PROBLEMI</h3>${(i.data||[]).map(x=>`<div class="item"><b class="${x.status==='Risolto'?'ok':'danger'}">⚠ ${esc(x.title)}</b><div class="job">${esc(x.priority)}</div><div class="muted">${esc(x.details||'')}</div></div>`).join('')||'<div class="empty">Nessun problema.</div>'}</div><div class="section"><h3>ATTIVITÀ</h3>${(a.data||[]).map(x=>`<div class="item"><b>${esc(x.title)}</b><div class="muted">${esc(x.notes||'')}</div></div>`).join('')||'<div class="empty">Nessuna attività.</div>'}</div>`)}
+function siteForm(s=null){open(s?'MODIFICA CANTIERE':'NUOVO CANTIERE',`<input id="sj" placeholder="Numero commessa" value="${esc(s?.job_number||'')}"><input id="sn" placeholder="Nome cantiere" value="${esc(s?.name||'')}"><input id="sc" placeholder="Cliente" value="${esc(s?.client||'')}"><input id="sa" placeholder="Indirizzo" value="${esc(s?.address||'')}"><select id="ss"><option>Attivo</option><option>In pausa</option><option>Completato</option></select><input id="sp" type="number" min="0" max="100" value="${s?.progress||0}" placeholder="Avanzamento %"><textarea id="snotes" placeholder="Note">${esc(s?.notes||'')}</textarea><button class="save" data-savesite="${s?.id||''}">SALVA</button>`);if(s)document.getElementById('ss').value=s.status}
+async function teamAccess(id){let s=sites.find(x=>x.id===id),r=await supa.from('site_members').select('*').eq('site_id',id),rows=r.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};if(uids.length){let p=await supa.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}open('TEAM ACCESS',`<div class="item"><div class="job">${esc(s.job_number)}</div><b>${esc(s.name)}</b></div>${rows.map(x=>`<div class="item"><b>${esc(pm[x.user_id]?.full_name||pm[x.user_id]?.email||'Utente')}</b><div class="role">${esc(x.role)}</div></div>`).join('')}<button class="save" data-invite="${id}">+ INVITA UTENTE</button>`)}
+function inviteForm(id){open('INVITA UTENTE',`<input id="in" placeholder="Nome e cognome"><input id="ie" type="email" placeholder="Email"><select id="ir">${roles.map(x=>`<option>${x}</option>`).join('')}</select><input id="is" type="hidden" value="${id}"><button class="save" data-send>INVIA INVITO REALE</button><div class="muted" style="margin-top:10px">L'utente verrà associato a questa commessa con il ruolo scelto.</div>`)}
+nav.onclick=e=>{let b=e.target.closest('[data-p]');if(b)setPage(b.dataset.p)};plus.onclick=()=>siteForm();document.getElementById('close').onclick=close;sheet.onclick=e=>{if(e.target===sheet)close()};
 document.addEventListener('click',async e=>{
-  const open=e.target.closest('[data-open]');
-  if(open){open.dataset.open==='site'?showSiteForm():showInviteForm();return}
-
-  const inviteSite=e.target.closest('[data-invite-site]');
-  if(inviteSite){showInviteForm(inviteSite.dataset.inviteSite);return}
-
-  const change=e.target.closest('[data-change-role]');
-  if(change){showRoleForm(change.dataset.changeRole);return}
-
-  const remove=e.target.closest('[data-remove-member]');
-  if(remove){
-    db.memberships=db.memberships.filter(m=>m.id!==remove.dataset.removeMember);persist();closeSheet();render();showToast('Accesso rimosso');return;
-  }
-
-  const action=e.target.closest('[data-action]');
-  if(action){
-    const id=action.dataset.id;
-    if(action.dataset.action==='manage-site'){showSiteAccess(id);return}
-    if(action.dataset.action==='user-access'){showUserAccess(id);return}
-    if(action.dataset.action==='delete-site'){
-      if(confirm('Eliminare questo cantiere?')){db.sites=db.sites.filter(s=>s.id!==id);db.memberships=db.memberships.filter(m=>m.siteId!==id);persist();render();showToast('Cantiere eliminato')}
-      return;
-    }
-    if(action.dataset.action==='save-profile'){
-      db.currentUser.name=document.getElementById('pName').value.trim()||'Utente';
-      db.currentUser.email=document.getElementById('pEmail').value.trim();
-      persist();render();showToast('Profilo salvato');return;
-    }
-  }
-
-  const saver=e.target.closest('[data-save]');
-  if(!saver)return;
-
-  if(saver.dataset.save==='site'){
-    const job=document.getElementById('sJob').value.trim(),name=document.getElementById('sName').value.trim();
-    if(!job||!name){showToast('Inserisci commessa e nome');return}
-    db.sites.push({id:uid(),job,name,client:document.getElementById('sClient').value.trim()});
-    persist();closeSheet();setPage('sites');showToast('Cantiere creato');return;
-  }
-
-  if(saver.dataset.save==='invite'){
-    const email=document.getElementById('uEmail').value.trim();
-    const name=document.getElementById('uName').value.trim();
-    const siteId=document.getElementById('inviteSiteId').value;
-    const role=document.getElementById('uRole').value;
-    if(!email||!siteId){showToast('Inserisci email e cantiere');return}
-    let user=db.users.find(x=>(x.email||'').toLowerCase()===email.toLowerCase());
-    if(!user){user={id:uid(),name,email};db.users.push(user)}else if(name){user.name=name}
-    let m=db.memberships.find(x=>x.siteId===siteId&&x.userId===user.id);
-    if(m)m.role=role;else db.memberships.push({id:uid(),siteId,userId:user.id,role});
-    persist();
-    const site=db.sites.find(x=>x.id===siteId);
-    closeSheet();setPage('team');showToast('Invito creato');
-    if(site)await shareInvite(user,site,role);
-    return;
-  }
-
-  if(saver.dataset.save==='role'){
-    const id=document.getElementById('membershipId').value;
-    const m=db.memberships.find(x=>x.id===id);
-    if(m){m.role=document.getElementById('newRole').value;persist();closeSheet();render();showToast('Ruolo aggiornato')}
-  }
+let x=e.target.closest('[data-tab]');if(x)return login(x.dataset.tab);
+x=e.target.closest('[data-auth]');if(x){let email=document.getElementById('ae').value.trim(),password=document.getElementById('ap').value;if(!email||password.length<6)return msg('Controlla email e password');if(x.dataset.auth==='login'){let r=await supa.auth.signInWithPassword({email,password});if(r.error)return msg(r.error.message);session=r.data.session;await load();nav.style.display='flex';plus.style.display='block';render();msg('Accesso eseguito')}else{let full_name=document.getElementById('an').value.trim(),r=await supa.auth.signUp({email,password,options:{data:{full_name}}});if(r.error)return msg(r.error.message);if(r.data.session){session=r.data.session;await load();nav.style.display='flex';plus.style.display='block';render()}else login();msg(r.data.session?'Account creato':'Controlla la tua email')}return}
+x=e.target.closest('[data-site]');if(x){detail=x.dataset.site;return render()};if(e.target.closest('[data-back]')){detail=null;return setPage('sites')}
+x=e.target.closest('[data-team]');if(x)return teamAccess(x.dataset.team);x=e.target.closest('[data-invite]');if(x)return inviteForm(x.dataset.invite);
+x=e.target.closest('[data-edit]');if(x)return siteForm(sites.find(s=>s.id===x.dataset.edit));
+x=e.target.closest('[data-act]');if(x)return open('NUOVA ATTIVITÀ',`<input id="at" placeholder="Attività"><textarea id="anote" placeholder="Note"></textarea><input id="asid" type="hidden" value="${x.dataset.act}"><button class="save" data-saveact>SALVA</button>`);
+x=e.target.closest('[data-issue]');if(x)return open('NUOVO PROBLEMA',`<input id="it" placeholder="Problema"><select id="ip"><option>Bassa</option><option selected>Media</option><option>Alta</option><option>Critica</option></select><textarea id="idetail" placeholder="Dettagli"></textarea><input id="iid" type="hidden" value="${x.dataset.issue}"><button class="save" data-saveissue>SALVA</button>`);
+x=e.target.closest('[data-savesite]');if(x){let d={job_number:sj.value.trim(),name:sn.value.trim(),client:sc.value.trim(),address:sa.value.trim(),status:ss.value,progress:Math.max(0,Math.min(100,+sp.value||0)),notes:snotes.value.trim()};if(!d.job_number||!d.name)return msg('Commessa e nome obbligatori');let r=x.dataset.savesite?await supa.from('sites').update(d).eq('id',x.dataset.savesite):await supa.from('sites').insert({...d,created_by:session.user.id});if(r.error)return msg(r.error.message);close();await load();setPage('sites');return msg('Cantiere salvato')}
+if(e.target.closest('[data-send]')){let body={site_id:is.value,email:ie.value.trim(),role:ir.value,full_name:in.value.trim()};if(!body.email)return msg('Inserisci email');e.target.disabled=true;e.target.textContent='INVIO…';let r=await supa.functions.invoke('invite-site-user',{body});e.target.disabled=false;e.target.textContent='INVIA INVITO REALE';if(r.error||r.data?.error)return msg(r.data?.error||r.error.message);close();await load();render();return msg(r.data?.message||'Invito inviato')}
+if(e.target.closest('[data-saveact]')){let sid=asid.value,r=await supa.from('activities').insert({site_id:sid,title:at.value.trim(),notes:anote.value.trim(),created_by:session.user.id});if(r.error)return msg(r.error.message);close();detail=sid;render();return msg('Attività salvata')}
+if(e.target.closest('[data-saveissue]')){let sid=iid.value,r=await supa.from('issues').insert({site_id:sid,title:it.value.trim(),priority:ip.value,details:idetail.value.trim(),created_by:session.user.id});if(r.error)return msg(r.error.message);close();detail=sid;render();return msg('Problema salvato')}
+if(e.target.closest('[data-profile]')){let r=await supa.from('profiles').upsert({id:session.user.id,email:session.user.email,full_name:pn.value.trim()});if(r.error)return msg(r.error.message);await load();render();return msg('Profilo salvato')}
+if(e.target.closest('[data-logout]')){await supa.auth.signOut();session=null;login()}
 });
-
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});
-}
-if('caches' in window){caches.keys().then(keys=>keys.forEach(k=>caches.delete(k))).catch(()=>{})}
-
-persist();render();
+let gs=await supa.auth.getSession();session=gs.data.session;if(session){nav.style.display='flex';plus.style.display='block';await load();render()}else login();
 })();
-</script>
-</body>
-</html>
+</script></body></html>
