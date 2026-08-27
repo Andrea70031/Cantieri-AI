@@ -28,3 +28,5 @@ FINAL 1.1: LIVE SITE, check-in/out GPS, presenze live, FIELD MODE e QR cantiere.
 FINAL 1.2: FIELD MODE semplificata per operai: presenza, foto, problema rapido, lavoro fatto con voce.
 
 FINAL 1.3: Cantiere Pulse, Smart Inbox, Offline Sync per lavoro fatto/problemi rapidi.
+
+FINAL 1.4: guida introduttiva role-based al primo accesso + richiamo dal Profilo.

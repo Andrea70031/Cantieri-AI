@@ -1,4 +1,4 @@
-const CACHE='cantiereai-final-v1-3';
+const CACHE='cantiereai-final-v1-4';
 const CORE=['./','./index.html','./manifest.json','./app-icon-192.png','./app-icon-512.png','./apple-touch-icon.png'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
 self.addEventListener('activate',e=>{e.waitUntil((async()=>{for(const k of await caches.keys())if(k!==CACHE)await caches.delete(k);await self.clients.claim()})())});
