@@ -57,19 +57,41 @@ nav button{border:0;background:none;color:var(--muted);min-width:64px;padding:8p
 .net{position:fixed;right:9px;top:calc(env(safe-area-inset-top) + 5px);z-index:90;font-size:9px;border-radius:99px;padding:4px 7px;background:#071017;border:1px solid var(--line);color:var(--green)}
 .net.off{color:var(--red);border-color:rgba(255,94,100,.3)}
 .hidden{display:none!important}.loading{text-align:center;color:var(--cyan);padding:34px}.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(55,215,255,.25);border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+
+.liveBand{display:grid;grid-template-columns:1.2fr .8fr;gap:10px}
+.liveCard{position:relative;overflow:hidden;border:1px solid rgba(74,224,160,.28);background:linear-gradient(180deg,rgba(17,45,39,.72),rgba(8,25,25,.88));border-radius:17px;padding:15px}
+.liveCard:after{content:"LIVE";position:absolute;right:-4px;top:-18px;font-size:62px;font-weight:900;color:rgba(74,224,160,.05)}
+.pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(74,224,160,.7);animation:pulse 1.7s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(74,224,160,0)}100%{box-shadow:0 0 0 0 rgba(74,224,160,0)}}
+.fieldMode{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fieldMode button{min-height:86px;text-align:left;font-size:14px}
+.presenceRow{display:flex;align-items:center;gap:10px}
+.presenceDot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(74,224,160,.7);flex:0 0 auto}
+.qrWrap{text-align:center}.qrWrap canvas,.qrWrap img{max-width:230px!important;width:72%!important;height:auto!important;background:white;padding:10px;border-radius:14px}
+.liveTimer{font-size:26px;font-weight:900;color:var(--green);margin-top:5px}
+
+
+.pulseHero{background:radial-gradient(circle at 90% 0,rgba(55,215,255,.14),transparent 38%),linear-gradient(180deg,rgba(16,36,49,.96),rgba(8,22,31,.96));border:1px solid var(--line);border-radius:19px;padding:17px;position:relative;overflow:hidden}
+.pulseHero:after{content:"PULSE";position:absolute;right:-5px;bottom:-28px;font-size:70px;font-weight:900;color:rgba(55,215,255,.045)}
+.pulseScore{font-size:44px;font-weight:900;line-height:1}.pulseScore.good{color:var(--green)}.pulseScore.warn{color:var(--amber)}.pulseScore.bad{color:var(--red)}
+.inboxItem{border-left:3px solid var(--cyan)}.inboxItem.issue{border-left-color:var(--red)}.inboxItem.photo{border-left-color:var(--green)}.inboxItem.report{border-left-color:var(--amber)}
+.badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--red);color:white;font-size:10px;font-weight:900}
+.offlineBar{display:none;position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 29px);z-index:95;background:#2b1f08;color:#ffd591;border:1px solid rgba(255,157,24,.35);padding:7px 11px;border-radius:999px;font-size:10px;font-weight:800;box-shadow:var(--shadow)}.offlineBar.show{display:block}
+.syncDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);margin-right:5px}
+
 @media(max-width:390px){main{padding-left:12px;padding-right:12px}.brand h1{font-size:26px}.grid3{grid-template-columns:1fr 1fr}.photoGrid{grid-template-columns:repeat(2,1fr)}nav button{min-width:57px;padding-left:5px;padding-right:5px}}
 @media print{nav,#fab,.net,.noPrint{display:none!important}main{padding:0;color:#111;background:white}.card,.item{background:white;color:#111;border:1px solid #ddd;box-shadow:none}}
 </style>
 </head>
 <body>
-<div id="net" class="net">ONLINE</div>
+<div id="net" class="net">ONLINE</div><div id="offlineBar" class="offlineBar"><span class="syncDot"></span><span id="offlineText">Modalità offline</span></div>
 <main id="app"><div class="loading"><span class="spinner"></span><div style="margin-top:9px">AVVIO CANTIEREAI…</div></div></main>
 <button id="fab" class="hidden">+</button>
 <nav id="nav" class="hidden">
- <button class="on" data-page="home"><span>⌂</span>HOME</button>
+ <button class="on" data-page="home"><span>◈</span>PULSE</button>
  <button data-page="sites"><span>▣</span>CANTIERI</button>
  <button data-page="ai"><span>✦</span>AI COMMAND</button>
- <button data-page="team"><span>◉</span>TEAM</button>
+ <button data-page="inbox"><span>▤</span>INBOX</button><button data-page="team"><span>◉</span>TEAM</button>
  <button data-page="profile"><span>⚙</span>PROFILO</button>
 </nav>
 <div id="sheet"><div class="sheetBox"><div class="sheetTop"><b id="sheetTitle"></b><button id="sheetClose" class="close">Chiudi</button></div><div id="sheetBody"></div></div></div>
@@ -81,7 +103,7 @@ nav button{border:0;background:none;color:var(--muted);min-width:64px;padding:8p
 const SUPABASE_URL="https://frehflwcnghrmqpzbpno.supabase.co";
 const SUPABASE_KEY="sb_publishable_SuYaTiqS5F9OifFyuadFEA_xkAqQujw";
 const APP_URL="https://andrea70031.github.io/Cantieri-AI/";
-const VERSION="1.0 FINAL";
+const VERSION="1.3 FINAL";
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const roles=['Amministratore','Project Manager','Capocantiere','Montatore','Ufficio tecnico','Direzione lavori','Cliente','Solo visualizzazione'];
 const el=id=>document.getElementById(id);
@@ -105,8 +127,8 @@ const canReport=id=>['Amministratore','Project Manager','Capocantiere'].includes
 const canPhoto=id=>['Amministratore','Project Manager','Capocantiere','Montatore','Ufficio tecnico'].includes(roleFor(id));
 const canDoc=id=>['Amministratore','Project Manager','Capocantiere','Ufficio tecnico'].includes(roleFor(id));
 
-window.addEventListener('online',()=>{net.textContent='ONLINE';net.classList.remove('off')});
-window.addEventListener('offline',()=>{net.textContent='OFFLINE';net.classList.add('off')});
+window.addEventListener('online',()=>{net.textContent='ONLINE';net.classList.remove('off');updateOfflineBadge();syncOfflineQueue()});
+window.addEventListener('offline',()=>{net.textContent='OFFLINE';net.classList.add('off');updateOfflineBadge()});
 if(!navigator.onLine){net.textContent='OFFLINE';net.classList.add('off')}
 
 async function loadBase(){
@@ -147,31 +169,46 @@ async function render(){
  if(page==='home')return renderHome();
  if(page==='sites')return renderSites();
  if(page==='ai')return renderAI();
+ if(page==='inbox')return renderInbox();
  if(page==='team')return renderTeam();
  if(page==='profile')return renderProfile();
 }
 
-function renderHome(){
- const critical=allIssues.filter(i=>i.priority==='Critica');
- const high=allIssues.filter(i=>i.priority==='Alta');
+async function renderHome(){
+ const critical=allIssues.filter(i=>i.priority==='Critica'),high=allIssues.filter(i=>i.priority==='Alta');
  const avg=sites.length?Math.round(sites.reduce((a,s)=>a+(Number(s.progress)||0),0)/sites.length):0;
- const attention=[...critical,...high].slice(0,5);
- header(`<div class="grid3">
+ const pres=await sb.from('site_checkins').select('id,site_id,user_id,check_in_at').is('check_out_at',null);
+ const inbox=await sb.from('inbox_items').select('id,site_id,source_type,title,summary,priority,status,created_at').eq('status','new').order('created_at',{ascending:false}).limit(8);
+ const present=(pres.data||[]).length,newInbox=(inbox.data||[]).length;
+ let score=100-Math.min(55,critical.length*18+high.length*7)-Math.min(20,Math.max(0,50-avg)/2);
+ score=Math.max(0,Math.round(score));const scoreClass=score>=80?'good':score>=55?'warn':'bad';
+ const attention=(inbox.data||[]).slice(0,5);
+ header(`<div class="pulseHero">
+   <div class="job">CANTIERE PULSE</div>
+   <div class="spread" style="align-items:flex-end"><div><div class="pulseScore ${scoreClass}">${score}</div><div class="lab">HEALTH SCORE</div></div><div style="text-align:right"><div class="pill green">${present} presenti live</div><div style="margin-top:6px"><span class="pill ${newInbox?'orange':''}">${newInbox} novità</span></div></div></div>
+   <div class="muted" style="margin-top:10px">${score>=80?'Situazione complessivamente sotto controllo.':score>=55?'Ci sono elementi da verificare oggi.':'Sono presenti criticità che richiedono attenzione.'}</div>
+ </div>
+ <div class="grid3" style="margin-top:10px">
   <div class="card metric"><div class="num">${sites.length}</div><div class="lab">CANTIERI</div></div>
   <div class="card metric"><div class="num">${allIssues.length}</div><div class="lab">PROBLEMI APERTI</div></div>
   <div class="card metric"><div class="num">${avg}%</div><div class="lab">AVANZAMENTO MEDIO</div></div>
  </div>
- <div class="section"><h3>COMMAND CENTER</h3><div class="quick">
-  <button class="ghost" data-quick="site"><b>＋ Nuovo cantiere</b><div class="muted">Crea una nuova commessa</div></button>
-  <button class="ghost" data-quick="ai"><b>✦ Chiedi all'AI</b><div class="muted">Analizza tutti i cantieri</div></button>
-  <button class="ghost" data-quick="issue"><b>⚠ Segnala problema</b><div class="muted">Scegli la commessa</div></button>
-  <button class="ghost" data-quick="report"><b>▤ Report giornaliero</b><div class="muted">Registra la giornata</div></button>
- </div></div>
- <div class="section"><h3>RICHIEDE ATTENZIONE</h3>
-  ${attention.map(i=>{const s=sites.find(x=>x.id===i.site_id);return `<div class="item attention" data-open-site="${i.site_id}"><div class="spread"><b>${esc(i.title)}</b><span class="pill ${i.priority==='Critica'?'red':'orange'}">${esc(i.priority)}</span></div><div class="job">${esc(s?.job_number||'')} · ${esc(s?.name||'')}</div><div class="muted">${esc(i.details||'')}</div></div>`}).join('')||'<div class="empty">Nessuna criticità ad alta priorità.</div>'}
+ <div class="section"><h3>OGGI</h3>
+  ${critical.slice(0,3).map(i=>{const s=sites.find(x=>x.id===i.site_id);return `<div class="item attention" data-open-site="${i.site_id}"><div class="spread"><b>${esc(i.title)}</b><span class="pill red">CRITICA</span></div><div class="job">${esc(s?.job_number||'')} · ${esc(s?.name||'')}</div></div>`}).join('')||'<div class="item"><b class="ok">✓ Nessuna criticità critica aperta</b></div>'}
  </div>
- <div class="section"><h3>CANTIERI RECENTI</h3>
- ${sites.slice(0,5).map(siteCard).join('')||'<div class="empty">Nessun cantiere. Premi + per iniziare.</div>'}</div>`);
+ <div class="section"><div class="spread"><h3 style="margin:0">SMART INBOX</h3><button class="mini" data-open-inbox>Apri ${newInbox?`<span class="badge">${newInbox}</span>`:''}</button></div>
+  ${attention.map(x=>inboxCard(x)).join('')||'<div class="empty">Nessuna nuova segnalazione.</div>'}
+ </div>
+ <div class="section"><h3>AZIONI RAPIDE</h3><div class="quick">
+  <button class="ghost" data-quick="site"><b>＋ Nuovo cantiere</b><div class="muted">Crea una commessa</div></button>
+  <button class="ghost" data-quick="ai"><b>✦ Chiedi all'AI</b><div class="muted">Analizza il portafoglio</div></button>
+  <button class="ghost" data-quick="issue"><b>⚠ Segnala problema</b><div class="muted">Rapido</div></button>
+  <button class="ghost" data-quick="report"><b>▤ Report</b><div class="muted">Per PM/capocantiere</div></button>
+ </div></div>`);
+}
+function inboxCard(x){
+ const s=sites.find(z=>z.id===x.site_id);
+ return `<div class="item inboxItem ${x.source_type}" data-inbox-id="${x.id}" data-inbox-source="${x.source_type}" data-inbox-source-id="${x.source_id||''}" data-inbox-site="${x.site_id}"><div class="spread"><b>${esc(x.title)}</b><span class="pill">${esc(x.source_type.toUpperCase())}</span></div><div class="job">${esc(s?.job_number||'')} · ${esc(s?.name||'')}</div><div class="muted">${esc(x.summary||'')}</div><div class="tiny">${fmtFull(x.created_at)}</div></div>`;
 }
 function siteCard(s){
  return `<div class="item" data-open-site="${s.id}">
@@ -215,11 +252,14 @@ async function renderSitePane(s){
     ${canPhoto(s.id)?`<button class="ghost" data-upload-photo="${s.id}"><b>⌾ Foto cantiere</b></button>`:''}
     ${canReport(s.id)?`<button class="ghost" data-add-report="${s.id}"><b>▤ Report giornaliero</b></button>`:''}
     <button class="ghost" data-ai-site="${s.id}"><b>✦ Chiedi all'AI</b></button>
+    <button class="ghost" data-field-mode="${s.id}"><b>⚡ MODALITÀ OPERAIO</b></button>
     ${canManage(s.id)?`<button class="ghost" data-edit-site="${s.id}"><b>✎ Modifica cantiere</b></button>`:''}
    </div></div>
+   <div id="liveSiteBox" class="section"><div class="loading"><span class="spinner"></span></div></div>
    <div class="section"><h3>ULTIMI PROBLEMI</h3>${(i.data||[]).map(issueCard).join('')||'<div class="empty">Nessun problema registrato.</div>'}</div>
    <div class="section"><h3>ULTIME ATTIVITÀ</h3>${(a.data||[]).map(a=>`<div class="item"><b>${esc(a.title)}</b><div class="muted">${esc(a.notes||'')}</div><div class="tiny">${fmtFull(a.created_at)}</div></div>`).join('')||'<div class="empty">Nessuna attività.</div>'}</div>
    <div class="notice" style="margin-top:16px">Report salvati: ${r.count||0}. Tutti i dati di questa scheda sono sincronizzati nel cloud e filtrati in base al tuo ruolo.</div>`;
+  await renderLiveSite(s.id);
   return;
  }
  if(siteTab==='activities'){
@@ -262,6 +302,15 @@ async function renderSiteTeam(s,pane){
  ${canManage(s.id)?`<div class="section"><h3>INVITI</h3>${(inv.data||[]).map(x=>`<div class="item"><div class="spread"><b>${esc(x.email)}</b><span class="pill ${x.status==='accepted'?'green':'orange'}">${esc(x.status)}</span></div><div class="role tiny">${esc(x.role)}</div></div>`).join('')||'<div class="empty">Nessun invito pendente.</div>'}</div>`:''}`;
 }
 
+
+async function renderInbox(){
+ const r=await sb.from('inbox_items').select('*').neq('status','archived').order('created_at',{ascending:false}).limit(100);
+ const rows=r.data||[],news=rows.filter(x=>x.status==='new').length;
+ header(`<div class="spread"><div><div class="job">SMART INBOX</div><h2 style="margin:4px 0">Da controllare</h2></div><span class="pill ${news?'orange':''}">${news} nuove</span></div>
+ <div class="section"><div class="chips"><button data-inbox-filter="">Tutto</button><button data-inbox-filter="issue">Problemi</button><button data-inbox-filter="photo">Foto</button><button data-inbox-filter="activity">Attività</button><button data-inbox-filter="report">Report</button></div><div id="inboxList">${rows.map(inboxCard).join('')||'<div class="empty">Inbox vuota.</div>'}</div></div>`);
+ window.__inboxRows=rows;
+}
+
 async function renderTeam(){
  const managed=sites.filter(s=>canManage(s.id));
  if(!managed.length)return header('<div class="section"><h3>TEAM</h3><div class="empty">Non gestisci ancora nessun cantiere.</div></div>');
@@ -278,6 +327,85 @@ async function renderProfile(){
   <button class="save" data-save-profile>SALVA PROFILO</button><button class="ghost danger" data-logout>ESCI DALL'ACCOUNT</button>
  </div></div>
  <div class="section"><h3>SISTEMA</h3><div class="item"><div class="spread"><span>Versione</span><b>${VERSION}</b></div><div class="spread" style="margin-top:10px"><span>Cloud database</span><span class="ok">Connesso</span></div><div class="spread" style="margin-top:10px"><span>Permessi per commessa</span><span class="ok">Attivi</span></div><div class="spread" style="margin-top:10px"><span>AI Command</span><span class="role">Backend attivo</span></div></div></div>`);
+}
+
+
+
+const offlineBar=el('offlineBar'),offlineText=el('offlineText');
+function openOfflineDB(){
+ return new Promise((resolve,reject)=>{
+  const req=indexedDB.open('CantiereAI_Offline',1);
+  req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('queue'))db.createObjectStore('queue',{keyPath:'id'})};
+  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+ });
+}
+async function queueOffline(item){
+ const db=await openOfflineDB();await new Promise((resolve,reject)=>{const tx=db.transaction('queue','readwrite');tx.objectStore('queue').put({...item,id:uid(),queued_at:new Date().toISOString()});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});await updateOfflineBadge();
+}
+async function getOfflineQueue(){
+ const db=await openOfflineDB();return await new Promise((resolve,reject)=>{const tx=db.transaction('queue','readonly'),r=tx.objectStore('queue').getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error)});
+}
+async function deleteOfflineItem(id){
+ const db=await openOfflineDB();await new Promise((resolve,reject)=>{const tx=db.transaction('queue','readwrite');tx.objectStore('queue').delete(id);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});
+}
+async function updateOfflineBadge(){
+ try{const q=await getOfflineQueue();if(!navigator.onLine||q.length){offlineBar.classList.add('show');offlineText.textContent=!navigator.onLine?`Offline · ${q.length} elementi in attesa`:`Sincronizzazione · ${q.length} elementi`}else offlineBar.classList.remove('show')}catch{}
+}
+async function syncOfflineQueue(){
+ if(!navigator.onLine||!session)return;
+ const q=await getOfflineQueue();if(!q.length){await updateOfflineBadge();return}
+ offlineBar.classList.add('show');offlineText.textContent=`Sincronizzazione · ${q.length} elementi`;
+ for(const item of q){
+  let r={error:new Error('tipo non supportato')};
+  if(item.type==='activity')r=await sb.from('activities').insert(item.payload);
+  if(item.type==='issue')r=await sb.from('issues').insert(item.payload);
+  if(!r.error)await deleteOfflineItem(item.id);
+ }
+ await loadBase();await updateOfflineBadge();if(page==='home')await renderHome();msg('Dati offline sincronizzati');
+}
+
+async function getPosition(){
+ return await new Promise((resolve,reject)=>{
+  if(!navigator.geolocation)return reject(new Error('Geolocalizzazione non disponibile'));
+  navigator.geolocation.getCurrentPosition(
+   p=>resolve({lat:p.coords.latitude,lng:p.coords.longitude,accuracy:p.coords.accuracy}),
+   err=>reject(new Error(err.message||'Posizione non disponibile')),
+   {enableHighAccuracy:true,timeout:12000,maximumAge:30000}
+  );
+ });
+}
+function durationText(start){
+ const mins=Math.max(0,Math.floor((Date.now()-new Date(start).getTime())/60000)),h=Math.floor(mins/60),m=mins%60;
+ return h?`${h}h ${m}m`:`${m} min`;
+}
+async function renderLiveSite(id){
+ const box=el('liveSiteBox');if(!box)return;
+ const q=await sb.from('site_checkins').select('*').eq('site_id',id).is('check_out_at',null).order('check_in_at',{ascending:true});
+ const rows=q.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};
+ if(uids.length){const p=await sb.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}
+ const mine=rows.find(x=>x.user_id===session.user.id);
+ box.innerHTML=`<h3>LIVE SITE</h3><div class="liveBand"><div class="liveCard"><div class="spread"><b><span class="pulse"></span> PRESENZE LIVE</b><span class="pill green">${rows.length} presenti</span></div>${rows.map(r=>`<div class="presenceRow" style="margin-top:11px"><span class="presenceDot"></span><div class="grow"><b>${esc(pm[r.user_id]?.full_name||pm[r.user_id]?.email||'Utente')}</b><div class="tiny">${fmtFull(r.check_in_at)} · ${durationText(r.check_in_at)}</div></div></div>`).join('')||'<div class="muted" style="margin-top:10px">Nessuno risulta presente.</div>'}</div><div class="card"><div class="lab">LA TUA PRESENZA</div>${mine?`<div class="liveTimer">${durationText(mine.check_in_at)}</div><div class="tiny">Entrata ${fmtFull(mine.check_in_at)}</div><button class="ghost" style="margin-top:10px" data-checkout="${mine.id}">ESCI DAL CANTIERE</button>`:`<div class="muted" style="margin:8px 0 10px">Registra ingresso con posizione GPS.</div>${canContribute(id)?`<button class="save" data-checkin="${id}">ENTRA IN CANTIERE</button>`:''}`}</div></div>`;
+}
+function fieldMode(id){
+ const s=sites.find(x=>x.id===id);
+ openSheet('FIELD MODE',`
+ <div class="item">
+   <div class="job">${esc(s?.job_number||'')}</div>
+   <b>${esc(s?.name||'')}</b>
+   <div class="muted">Modalità rapida per chi lavora sul posto: pochi tocchi, niente burocrazia.</div>
+ </div>
+ <div class="fieldMode">
+   ${canContribute(id)?`<button class="ghost" data-field-presence="${id}"><b>● PRESENZA</b><div class="muted">Entra / esci dal cantiere</div></button>`:''}
+   ${canPhoto(id)?`<button class="ghost" data-upload-photo="${id}"><b>⌾ FOTO</b><div class="muted">Scatta e salva</div></button>`:''}
+   ${canContribute(id)?`<button class="ghost" data-simple-issue="${id}"><b>⚠ PROBLEMA</b><div class="muted">Foto o voce, 10 secondi</div></button>`:''}
+   ${canContribute(id)?`<button class="ghost" data-simple-work="${id}"><b>✓ LAVORO FATTO</b><div class="muted">Detta e salva</div></button>`:''}
+ </div>
+ <div class="notice" style="margin-top:12px">Data, ora, utente e commessa vengono associati automaticamente.</div>`);
+}
+function qrSite(id){
+ const s=sites.find(x=>x.id===id),url=`${APP_URL}?site=${id}`;
+ openSheet('QR CANTIERE',`<div class="qrWrap"><div class="job">${esc(s?.job_number||'')} · ${esc(s?.name||'')}</div><div id="qrBox" style="margin:16px auto"></div><div class="muted">Scansiona per aprire direttamente questa commessa in CantiereAI.</div><button class="ghost" style="margin-top:12px" data-copy-qr="${esc(url)}">COPIA LINK</button></div>`);
+ const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';script.onload=()=>new QRCode(el('qrBox'),{text:url,width:240,height:240,colorDark:'#071017',colorLight:'#ffffff'});document.head.appendChild(script);
 }
 
 async function renderAI(){
@@ -311,6 +439,40 @@ function siteForm(s=null){
  if(s)el('fStatus').value=s.status||'Attivo';
 }
 function activityForm(id){openSheet('NUOVA ATTIVITÀ',`<label class="flabel">Attività *</label><input id="actTitle" placeholder="Descrizione breve"><label class="flabel">Note</label><textarea id="actNotes"></textarea><input id="actSite" type="hidden" value="${id}"><button class="save" data-save-activity>SALVA ATTIVITÀ</button>`)}
+
+function simpleWorkForm(id){
+ openSheet('LAVORO FATTO',`
+   <div class="notice">Basta una frase. Esempio: “Finita posa serramenti lato nord, mancano due vetri”.</div>
+   <label class="flabel">Cosa hai fatto?</label>
+   <div class="chatInput">
+     <button class="iconBtn" data-voice-target="simpleWorkText">🎙</button>
+     <textarea id="simpleWorkText" placeholder="Scrivi o detta una frase…"></textarea>
+     <button class="save" style="width:58px;padding:0" data-save-simple-work="${id}">✓</button>
+   </div>
+ `);
+}
+function simpleIssueForm(id){
+ openSheet('SEGNALA PROBLEMA',`
+   <div class="notice">Puoi anche solo dettare una frase. Se serve, aggiungi una foto dopo.</div>
+   <label class="flabel">Priorità</label>
+   <select id="simpleIssuePriority"><option>Media</option><option>Alta</option><option>Critica</option></select>
+   <label class="flabel">Cosa non va?</label>
+   <div class="chatInput">
+     <button class="iconBtn" data-voice-target="simpleIssueText">🎙</button>
+     <textarea id="simpleIssueText" placeholder="Es. manca materiale lato est…"></textarea>
+     <button class="save" style="width:58px;padding:0" data-save-simple-issue="${id}">⚠</button>
+   </div>
+ `);
+}
+function voiceTo(targetId){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR)return msg('Dettatura vocale non disponibile');
+ const rec=new SR();rec.lang='it-IT';rec.interimResults=false;rec.maxAlternatives=1;
+ rec.onresult=e=>{const t=el(targetId);if(t)t.value=e.results[0][0].transcript};
+ rec.onerror=()=>msg('Non riesco ad ascoltare');
+ rec.start();
+}
+
 async function issueForm(id){
  const tm=await sb.from('site_members').select('*').eq('site_id',id),rows=tm.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};
  if(uids.length){const p=await sb.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}
@@ -386,6 +548,9 @@ document.addEventListener('click',async e=>{
  x=e.target.closest('[data-open-site]');if(x){siteId=x.dataset.openSite;siteTab='overview';return render()}
  if(e.target.closest('[data-back-sites]')){siteId=null;return setPage('sites')}
  x=e.target.closest('[data-site-tab]');if(x){siteTab=x.dataset.siteTab;return renderSite()}
+ if(e.target.closest('[data-open-inbox]'))return setPage('inbox');
+ x=e.target.closest('[data-inbox-filter]');if(x){const f=x.dataset.inboxFilter||'',rows=window.__inboxRows||[],l=el('inboxList');if(l)l.innerHTML=rows.filter(r=>!f||r.source_type===f).map(inboxCard).join('')||'<div class="empty">Nessun elemento.</div>';return}
+ x=e.target.closest('[data-inbox-id]');if(x){await sb.from('inbox_items').update({status:'seen'}).eq('id',x.dataset.inboxId);const type=x.dataset.inboxSource,sid=x.dataset.inboxSite,sourceId=x.dataset.inboxSourceId;if(type==='issue'&&sourceId)return issueDetail(sourceId);siteId=sid;siteTab=type==='photo'?'files':type==='report'?'reports':type==='activity'?'activities':'overview';return render()}
  x=e.target.closest('[data-quick]');if(x){if(x.dataset.quick==='site')return siteForm();if(x.dataset.quick==='ai')return setPage('ai');if(x.dataset.quick==='issue')return chooseSite('issue');if(x.dataset.quick==='report')return chooseSite('report')}
  x=e.target.closest('[data-choose-site]');if(x){const id=x.dataset.chooseSite,a=x.dataset.chooseAction;closeSheet();return a==='issue'?issueForm(id):reportForm(id)}
  x=e.target.closest('[data-edit-site]');if(x)return siteForm(sites.find(s=>s.id===x.dataset.editSite));
@@ -400,13 +565,39 @@ document.addEventListener('click',async e=>{
  x=e.target.closest('[data-open-file]');if(x)return openStorage(x.dataset.openFile);
  x=e.target.closest('[data-map]');if(x){window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(x.dataset.map),'_blank');return}
  x=e.target.closest('[data-share-site]');if(x){const s=sites.find(z=>z.id===x.dataset.shareSite),text=`CantiereAI — ${s?.job_number||''} ${s?.name||''}\n${APP_URL}?site=${x.dataset.shareSite}`;try{if(navigator.share)await navigator.share({title:'CantiereAI',text});else{await navigator.clipboard.writeText(text);msg('Link copiato')}}catch{}return}
- x=e.target.closest('[data-ai-site]');if(x){aiSiteId=x.dataset.aiSite;siteId=null;return setPage('ai')}
+ x=e.target.closest('[data-ai-site]');if(x){aiSiteId=x.dataset.aiSite;siteId=null;closeSheet();return setPage('ai')}
+ x=e.target.closest('[data-field-mode]');if(x)return fieldMode(x.dataset.fieldMode);
+ x=e.target.closest('[data-field-presence]');if(x){closeSheet();siteId=x.dataset.fieldPresence;siteTab='overview';await render();setTimeout(()=>el('liveSiteBox')?.scrollIntoView({behavior:'smooth',block:'center'}),150);return}
+ x=e.target.closest('[data-simple-work]');if(x)return simpleWorkForm(x.dataset.simpleWork);
+ x=e.target.closest('[data-simple-issue]');if(x)return simpleIssueForm(x.dataset.simpleIssue);
+ x=e.target.closest('[data-voice-target]');if(x){voiceTo(x.dataset.voiceTarget);return}
+ x=e.target.closest('[data-site-qr]');if(x)return qrSite(x.dataset.siteQr);
+ x=e.target.closest('[data-copy-qr]');if(x){try{await navigator.clipboard.writeText(x.dataset.copyQr);msg('Link copiato')}catch{msg('Impossibile copiare')}return}
+ x=e.target.closest('[data-checkin]');if(x){e.target.disabled=true;e.target.textContent='POSIZIONE…';try{const p=await getPosition();const r=await sb.from('site_checkins').insert({site_id:x.dataset.checkin,user_id:session.user.id,check_in_lat:p.lat,check_in_lng:p.lng});if(r.error)return msg(r.error.message);msg('Ingresso registrato');return renderSite()}catch(err){e.target.disabled=false;e.target.textContent='ENTRA IN CANTIERE';return msg(err.message)}}
+ x=e.target.closest('[data-checkout]');if(x){e.target.disabled=true;e.target.textContent='USCITA…';try{const p=await getPosition();const r=await sb.from('site_checkins').update({check_out_at:new Date().toISOString(),check_out_lat:p.lat,check_out_lng:p.lng}).eq('id',x.dataset.checkout);if(r.error)return msg(r.error.message);msg('Uscita registrata');return renderSite()}catch(err){e.target.disabled=false;e.target.textContent='ESCI DAL CANTIERE';return msg(err.message)}}
  x=e.target.closest('[data-ai-prompt]');if(x){el('aiInput').value=x.dataset.aiPrompt;return sendAI()}
  if(e.target.id==='aiSend')return sendAI();if(e.target.id==='voiceBtn')return startVoice();
 
  x=e.target.closest('[data-save-site]');if(x){
   const data={job_number:el('fJob').value.trim(),name:el('fName').value.trim(),client:el('fClient').value.trim(),address:el('fAddress').value.trim(),status:el('fStatus').value,progress:Math.max(0,Math.min(100,Number(el('fProgress').value)||0)),notes:el('fNotes').value.trim()};if(!data.job_number||!data.name)return msg('Commessa e nome sono obbligatori');
   const r=x.dataset.saveSite?await sb.from('sites').update(data).eq('id',x.dataset.saveSite):await sb.from('sites').insert({...data,created_by:session.user.id});if(r.error)return msg(r.error.message);closeSheet();await loadBase();siteId=x.dataset.saveSite||null;await (siteId?render():setPage('sites'));return msg('Cantiere salvato');
+ }
+ x=e.target.closest('[data-save-simple-work]');if(x){
+  const text=el('simpleWorkText').value.trim();if(!text)return msg('Detta o scrivi cosa hai fatto');
+  const payload={site_id:x.dataset.saveSimpleWork,title:'Lavoro fatto',notes:text,created_by:session.user.id};
+  if(!navigator.onLine){await queueOffline({type:'activity',payload});closeSheet();return msg('Salvato offline: verrà sincronizzato')}
+  const r=await sb.from('activities').insert(payload);
+  if(r.error){await queueOffline({type:'activity',payload});closeSheet();return msg('Salvato in coda offline')}
+  closeSheet();siteId=x.dataset.saveSimpleWork;siteTab='activities';await render();return msg('Lavoro registrato');
+ }
+ x=e.target.closest('[data-save-simple-issue]');if(x){
+  const text=el('simpleIssueText').value.trim();if(!text)return msg('Descrivi il problema');
+  const title=text.length>72?text.slice(0,69)+'…':text;
+  const payload={site_id:x.dataset.saveSimpleIssue,title,details:text,priority:el('simpleIssuePriority').value,created_by:session.user.id};
+  if(!navigator.onLine){await queueOffline({type:'issue',payload});closeSheet();return msg('Problema salvato offline')}
+  const r=await sb.from('issues').insert(payload);
+  if(r.error){await queueOffline({type:'issue',payload});closeSheet();return msg('Problema messo in coda offline')}
+  closeSheet();await loadBase();siteId=x.dataset.saveSimpleIssue;siteTab='issues';await render();return msg('Problema segnalato');
  }
  if(e.target.closest('[data-save-activity]')){
   const sid=el('actSite').value,title=el('actTitle').value.trim();if(!title)return msg('Inserisci l’attività');const r=await sb.from('activities').insert({site_id:sid,title,notes:el('actNotes').value.trim(),created_by:session.user.id});if(r.error)return msg(r.error.message);closeSheet();siteId=sid;siteTab='activities';await render();return msg('Attività salvata');
@@ -436,7 +627,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='aiInp
 window.addEventListener('error',e=>{console.error(e.error||e.message);if(!session&&app.textContent.includes('AVVIO'))app.innerHTML='<div class="notice">Errore di avvio. Ricarica la pagina; se continua, verifica la connessione internet.</div>'});
 
 const gs=await sb.auth.getSession();session=gs.data.session;
-if(session){await loadBase();const requested=new URLSearchParams(location.search).get('site');if(requested&&sites.some(s=>s.id===requested))siteId=requested;await render()}else showAuth();
+if(session){await loadBase();await updateOfflineBadge();if(navigator.onLine)syncOfflineQueue();const requested=new URLSearchParams(location.search).get('site');if(requested&&sites.some(s=>s.id===requested))siteId=requested;await render()}else showAuth();
 
 sb.auth.onAuthStateChange(async(event,s)=>{if(s&&(!session||s.user.id!==session.user.id)){session=s;await loadBase();await render()}if(event==='SIGNED_OUT'){session=null;showAuth()}});
 

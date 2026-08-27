@@ -22,3 +22,9 @@ Nota AI:
 l'Edge Function usa automaticamente OpenAI quando nel progetto Supabase è configurato
 il secret OPENAI_API_KEY. In assenza del secret resta attiva una modalità di analisi
 deterministica dei dati del cantiere.
+
+FINAL 1.1: LIVE SITE, check-in/out GPS, presenze live, FIELD MODE e QR cantiere.
+
+FINAL 1.2: FIELD MODE semplificata per operai: presenza, foto, problema rapido, lavoro fatto con voce.
+
+FINAL 1.3: Cantiere Pulse, Smart Inbox, Offline Sync per lavoro fatto/problemi rapidi.
