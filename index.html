@@ -1,74 +1,447 @@
 <!doctype html>
 <html lang="it">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071017"><title>CantiereAI Cloud</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071017">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CantiereAI">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<title>CantiereAI</title>
 <style>
-:root{--bg:#071017;--p:#0d1821;--p2:#102431;--c:#37d7ff;--a:#ff9d18;--t:#eef8fb;--m:#8ca4ae;--r:#ff5e64;--g:#4ae0a0;--l:rgba(55,215,255,.22)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.07;background-image:linear-gradient(rgba(55,215,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(55,215,255,.16) 1px,transparent 1px);background-size:32px 32px}
-main{max-width:760px;margin:auto;padding:calc(env(safe-area-inset-top) + 18px) 16px 125px;position:relative;z-index:1;min-height:100vh}
-header{display:flex;justify-content:space-between;align-items:center}.brand small{color:var(--c);font-size:10px;letter-spacing:3px;font-weight:900}.brand h1{margin:4px 0 0;font-size:30px}.core{width:54px;height:54px;border:2px solid var(--a);border-radius:50%;display:grid;place-items:center;box-shadow:0 0 24px #ff9d1840}.core:after{content:"";width:28px;height:28px;border-radius:50%;background:var(--a);box-shadow:0 0 22px #ff9d1888}
-.line{height:1px;background:linear-gradient(90deg,var(--c),transparent);margin:18px 0}.section{margin-top:22px}.section h3{font-size:14px;color:var(--c);letter-spacing:3px}
-.card,.item,.empty{background:linear-gradient(180deg,#102431ee,#0a1821ee);border:1px solid var(--l);border-radius:18px;padding:16px}.item{margin:9px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.num{font-size:34px;font-weight:900}.lab{font-size:10px;color:var(--m);font-weight:900;letter-spacing:1px}.job{color:var(--a);font-size:12px;font-weight:900}.muted{color:var(--m);font-size:14px;margin-top:4px;line-height:1.4}.k{display:flex;justify-content:space-between;gap:10px;align-items:center}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:var(--p2);border:1px solid var(--l)}.role{color:var(--c)}.danger{color:var(--r)}.ok{color:var(--g)}.progress{height:8px;background:#071017;border-radius:999px;margin-top:10px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#0bb5d6,var(--c))}
-button,input,select,textarea{font:inherit}button{cursor:pointer}.save,.ghost,.mini{border-radius:12px;padding:12px 14px;font-weight:800}.save{width:100%;border:0;background:linear-gradient(90deg,#ff8d0a,#ffb22d);color:#111}.ghost{width:100%;border:1px solid var(--l);background:var(--p);color:var(--t);margin-top:8px}.mini{border:1px solid var(--l);background:var(--p2);color:var(--t);padding:8px 10px}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-input,select,textarea{width:100%;padding:14px;margin:5px 0 12px;border-radius:12px;border:1px solid var(--l);background:#061019;color:white;font-size:16px}textarea{min-height:84px}
-nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:#09131bea;backdrop-filter:blur(16px);border-top:1px solid var(--l);padding:7px 0 calc(env(safe-area-inset-bottom) + 6px);z-index:20}nav button{border:0;background:none;color:var(--m);padding:9px 12px;font-size:11px;font-weight:700}nav .on{color:var(--a)}
-#plus{position:fixed;right:20px;bottom:88px;width:62px;height:62px;border-radius:50%;border:1px solid #ffbd5b;background:var(--a);font-size:30px;font-weight:800;z-index:21;box-shadow:0 0 24px #ff9d1855}
-#sheet{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;z-index:40}#sheet.open{display:flex}.box{width:100%;max-height:90vh;overflow:auto;background:#09141c;border-radius:26px 26px 0 0;border-top:1px solid var(--c);padding:18px 16px calc(env(safe-area-inset-bottom) + 20px)}.top{display:flex;justify-content:space-between;align-items:center}.top b{color:var(--c)}.close{background:var(--p2);color:var(--t);border:1px solid var(--l);border-radius:10px;padding:8px 11px}
-.login{max-width:430px;margin:8vh auto}.login .core{margin:0 auto 14px;width:76px;height:76px}.center{text-align:center}.tabs{display:flex;gap:7px;margin:12px 0}.tabs button{flex:1;border:1px solid var(--l);border-radius:10px;background:var(--p);color:var(--m);padding:10px}.tabs .active{color:#111;background:var(--a)}
-.toast{position:fixed;left:50%;bottom:135px;transform:translateX(-50%);z-index:80;background:#0c1b24;border:1px solid var(--c);border-radius:12px;padding:11px 15px;display:none;max-width:90%;text-align:center}.toast.show{display:block}
-@media(max-width:390px){nav button{padding:9px 9px;font-size:10.5px}}
-</style></head>
+:root{
+ --bg:#071017;--bg2:#09141c;--panel:#0d1821;--panel2:#102431;--cyan:#37d7ff;--amber:#ff9d18;
+ --text:#eff8fb;--muted:#8ca4ae;--red:#ff5e64;--green:#4ae0a0;--line:rgba(55,215,255,.22);
+ --shadow:0 18px 50px rgba(0,0,0,.32)
+}
+*{box-sizing:border-box} html{background:var(--bg)} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.065;background-image:linear-gradient(rgba(55,215,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(55,215,255,.18) 1px,transparent 1px);background-size:32px 32px}
+button,input,select,textarea{font:inherit} button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+main{max-width:820px;margin:auto;min-height:100vh;padding:calc(env(safe-area-inset-top) + 15px) 15px 118px;position:relative;z-index:1}
+header{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.brand small{font-size:9px;letter-spacing:2.8px;color:var(--cyan);font-weight:900}.brand h1{margin:3px 0 0;font-size:29px;line-height:1}
+.core{width:50px;height:50px;border:2px solid var(--amber);border-radius:50%;display:grid;place-items:center;box-shadow:0 0 24px rgba(255,157,24,.25)}
+.core:after{content:"";width:25px;height:25px;background:var(--amber);border-radius:50%;box-shadow:0 0 20px rgba(255,157,24,.65)}
+.hudline{height:1px;background:linear-gradient(90deg,var(--cyan),transparent);margin:17px 0}
+.card,.item,.empty,.notice{background:linear-gradient(180deg,rgba(16,36,49,.95),rgba(10,24,33,.95));border:1px solid var(--line);border-radius:17px;padding:15px;box-shadow:0 8px 28px rgba(0,0,0,.12)}
+.item{margin:8px 0}.empty{text-align:center;color:var(--muted);padding:25px 14px}.notice{border-color:rgba(255,157,24,.28);background:rgba(255,157,24,.075);color:#ffd89f;font-size:13px;line-height:1.45}
+.section{margin-top:21px}.section h3{font-size:12px;letter-spacing:2.4px;color:var(--cyan);margin:0 0 10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.metric .num{font-size:30px;font-weight:900}.metric .lab{font-size:9px;color:var(--muted);font-weight:900;letter-spacing:.9px;margin-top:3px}
+.kicker,.spread{display:flex;align-items:center;justify-content:space-between;gap:10px}.grow{flex:1;min-width:0}.job{color:var(--amber);font-size:11px;font-weight:900;letter-spacing:.4px}
+.muted{color:var(--muted);font-size:13px;line-height:1.4;margin-top:4px}.tiny{font-size:11px;color:var(--muted)}.role{color:var(--cyan)}.danger{color:var(--red)}.ok{color:var(--green)}.amber{color:var(--amber)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;border:1px solid var(--line);font-size:10px;font-weight:800;background:rgba(16,36,49,.85)}.pill.red{border-color:rgba(255,94,100,.35);color:#ff8c91}.pill.green{border-color:rgba(74,224,160,.32);color:var(--green)}.pill.orange{border-color:rgba(255,157,24,.35);color:#ffc16b}
+.progress{height:7px;background:#050d12;border-radius:99px;overflow:hidden;margin-top:10px}.progress i{display:block;height:100%;background:linear-gradient(90deg,#0bb5d6,var(--cyan))}
+.save,.ghost,.mini,.iconBtn{border-radius:11px;font-weight:800}.save{border:0;background:linear-gradient(90deg,#ff8d0a,#ffb22d);color:#111;padding:13px 14px;width:100%}.ghost{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 13px;width:100%}.mini{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:8px 10px;font-size:12px}.iconBtn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 11px}
+.rowBtns{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+input,select,textarea{width:100%;padding:13px;margin:5px 0 11px;border-radius:11px;border:1px solid var(--line);background:#061019;color:white;font-size:16px;outline:none}
+textarea{min-height:88px;resize:vertical} input:focus,select:focus,textarea:focus{border-color:var(--cyan)}
+label.flabel{font-size:11px;color:var(--muted);font-weight:700}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;background:rgba(7,16,23,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:5px 0 calc(env(safe-area-inset-bottom) + 5px)}
+nav button{border:0;background:none;color:var(--muted);min-width:64px;padding:8px 8px 7px;font-size:9.5px;font-weight:800}nav button span{display:block;font-size:20px;line-height:19px;margin-bottom:3px}nav .on{color:var(--amber)}
+#fab{position:fixed;right:18px;bottom:85px;z-index:32;width:58px;height:58px;border-radius:50%;border:1px solid #ffd082;background:var(--amber);font-size:29px;font-weight:900;color:#101010;box-shadow:0 0 26px rgba(255,157,24,.38)}
+#sheet{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.72);display:none;align-items:flex-end}#sheet.open{display:flex}.sheetBox{width:100%;max-height:92vh;overflow:auto;background:#08131b;border-radius:25px 25px 0 0;border-top:1px solid var(--cyan);padding:17px 15px calc(env(safe-area-inset-bottom) + 18px);box-shadow:var(--shadow)}
+.sheetTop{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:-17px;background:#08131b;padding:17px 0 10px;z-index:2}.sheetTop b{color:var(--cyan);letter-spacing:1px}.close{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:8px 10px}
+.toast{position:fixed;left:50%;bottom:130px;transform:translateX(-50%);z-index:100;background:#0c1b24;border:1px solid var(--cyan);border-radius:11px;padding:10px 13px;display:none;max-width:92%;text-align:center;box-shadow:var(--shadow);font-size:13px}.toast.show{display:block}
+.login{max-width:430px;margin:7vh auto 0}.loginLogo{text-align:center;margin-bottom:20px}.loginLogo img{width:86px;height:86px;border-radius:20px;box-shadow:0 14px 40px rgba(0,0,0,.35)}.loginLogo h1{font-size:34px;margin:8px 0 2px}.loginLogo small{color:var(--cyan);letter-spacing:2.5px}.tabsAuth{display:flex;gap:7px;margin-bottom:12px}.tabsAuth button{flex:1;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:10px;border-radius:10px}.tabsAuth .active{background:var(--amber);border-color:var(--amber);color:#111}
+.siteTabs{display:flex;gap:7px;overflow:auto;padding:2px 0 8px;scrollbar-width:none}.siteTabs::-webkit-scrollbar{display:none}.siteTabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:9px 11px;border-radius:999px;font-size:11px;font-weight:800}.siteTabs .active{color:#101010;background:var(--cyan);border-color:var(--cyan)}
+.searchbar{display:flex;gap:7px}.searchbar input{margin:0}.searchbar select{width:140px;margin:0}
+.photoGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.photo{aspect-ratio:1;background:#061019;border-radius:12px;overflow:hidden;border:1px solid var(--line);position:relative}.photo img{width:100%;height:100%;object-fit:cover}.photo span{position:absolute;left:5px;right:5px;bottom:5px;background:rgba(0,0,0,.65);padding:4px;border-radius:6px;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fileRow{display:flex;align-items:center;gap:10px}.fileIcon{width:38px;height:38px;border-radius:10px;background:var(--panel2);display:grid;place-items:center;color:var(--cyan);font-weight:900}
+.aiHero{position:relative;overflow:hidden}.aiHero:after{content:"AI";position:absolute;right:-5px;top:-30px;font-size:100px;font-weight:900;color:rgba(55,215,255,.045)}.chat{display:flex;flex-direction:column;gap:9px;min-height:250px}.bubble{max-width:88%;padding:11px 12px;border-radius:15px;line-height:1.42;font-size:13px;white-space:pre-wrap}.bubble.user{align-self:flex-end;background:rgba(255,157,24,.14);border:1px solid rgba(255,157,24,.3)}.bubble.ai{align-self:flex-start;background:rgba(55,215,255,.08);border:1px solid var(--line)}.chatInput{display:grid;grid-template-columns:auto 1fr auto;gap:6px;align-items:end}.chatInput textarea{margin:0;min-height:49px;max-height:130px}.chatInput button{height:49px;min-width:49px}
+.chips{display:flex;gap:6px;overflow:auto;padding-bottom:4px}.chips button{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:8px 10px;font-size:11px}
+.attention{border-left:3px solid var(--red)}.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.quick button{text-align:left}
+.issueCard{border-left:3px solid rgba(255,157,24,.7)}.issueCard.critical{border-left-color:var(--red)}
+.userRow{display:flex;align-items:center;gap:10px}.avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line);font-weight:900;color:var(--amber);flex:0 0 auto}
+.net{position:fixed;right:9px;top:calc(env(safe-area-inset-top) + 5px);z-index:90;font-size:9px;border-radius:99px;padding:4px 7px;background:#071017;border:1px solid var(--line);color:var(--green)}
+.net.off{color:var(--red);border-color:rgba(255,94,100,.3)}
+.hidden{display:none!important}.loading{text-align:center;color:var(--cyan);padding:34px}.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(55,215,255,.25);border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:390px){main{padding-left:12px;padding-right:12px}.brand h1{font-size:26px}.grid3{grid-template-columns:1fr 1fr}.photoGrid{grid-template-columns:repeat(2,1fr)}nav button{min-width:57px;padding-left:5px;padding-right:5px}}
+@media print{nav,#fab,.net,.noPrint{display:none!important}main{padding:0;color:#111;background:white}.card,.item{background:white;color:#111;border:1px solid #ddd;box-shadow:none}}
+</style>
+</head>
 <body>
-<main id="app"><div class="center muted" style="padding-top:40vh">CONNESSIONE CLOUD…</div></main>
-<button id="plus" style="display:none">+</button>
-<nav id="nav" style="display:none"><button class="on" data-p="home">⌂<br>HOME</button><button data-p="sites">▣<br>CANTIERI</button><button data-p="team">◉<br>TEAM</button><button data-p="profile">⚙<br>PROFILO</button></nav>
-<div id="sheet"><div class="box"><div class="top"><b id="st"></b><button class="close" id="close">Chiudi</button></div><div id="sb"></div></div></div><div id="toast" class="toast"></div>
+<div id="net" class="net">ONLINE</div>
+<main id="app"><div class="loading"><span class="spinner"></span><div style="margin-top:9px">AVVIO CANTIEREAI…</div></div></main>
+<button id="fab" class="hidden">+</button>
+<nav id="nav" class="hidden">
+ <button class="on" data-page="home"><span>⌂</span>HOME</button>
+ <button data-page="sites"><span>▣</span>CANTIERI</button>
+ <button data-page="ai"><span>✦</span>AI COMMAND</button>
+ <button data-page="team"><span>◉</span>TEAM</button>
+ <button data-page="profile"><span>⚙</span>PROFILO</button>
+</nav>
+<div id="sheet"><div class="sheetBox"><div class="sheetTop"><b id="sheetTitle"></b><button id="sheetClose" class="close">Chiudi</button></div><div id="sheetBody"></div></div></div>
+<div id="toast" class="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (async()=>{
-const supa=window.supabase.createClient('https://frehflwcnghrmqpzbpno.supabase.co','sb_publishable_SuYaTiqS5F9OifFyuadFEA_xkAqQujw',{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+'use strict';
+const SUPABASE_URL="https://frehflwcnghrmqpzbpno.supabase.co";
+const SUPABASE_KEY="sb_publishable_SuYaTiqS5F9OifFyuadFEA_xkAqQujw";
+const APP_URL="https://andrea70031.github.io/Cantieri-AI/";
+const VERSION="1.0 FINAL";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const roles=['Amministratore','Project Manager','Capocantiere','Montatore','Ufficio tecnico','Direzione lavori','Cliente','Solo visualizzazione'];
-const app=document.getElementById('app'),nav=document.getElementById('nav'),plus=document.getElementById('plus'),sheet=document.getElementById('sheet'),st=document.getElementById('st'),sb=document.getElementById('sb'),toast=document.getElementById('toast');
-let page='home',session=null,profile=null,sites=[],members=[],detail=null;
+const el=id=>document.getElementById(id);
+const app=el('app'),nav=el('nav'),fab=el('fab'),sheet=el('sheet'),sheetTitle=el('sheetTitle'),sheetBody=el('sheetBody'),toast=el('toast'),net=el('net');
+let page='home',session=null,profile=null,sites=[],members=[],allIssues=[],siteId=null,siteTab='overview',aiSiteId='',busy=false;
+
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const msg=t=>{toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2100)};
-const open=(t,h)=>{st.textContent=t;sb.innerHTML=h;sheet.classList.add('open')};const close=()=>sheet.classList.remove('open');
-function head(h){app.innerHTML=`<header><div class="brand"><small>JARVIS CONSTRUCTION OS · CLOUD V5.1</small><h1>CANTIERE AI</h1></div><div class="core"></div></header><div class="line"></div>${h}`}
-function role(id){return members.find(x=>x.site_id===id&&x.user_id===session.user.id)?.role||''} function manage(id){return ['Amministratore','Project Manager'].includes(role(id))}
-async function load(){let [p,s,m]=await Promise.all([supa.from('profiles').select('*').eq('id',session.user.id).maybeSingle(),supa.from('sites').select('*').order('created_at',{ascending:false}),supa.from('site_members').select('*')]);profile=p.data||{full_name:'',email:session.user.email};sites=s.data||[];members=m.data||[]}
-function login(mode='login'){nav.style.display='none';plus.style.display='none';app.innerHTML=`<div class="login"><div class="center"><div class="core"></div><div class="job">CANTIEREAI CLOUD</div><h1>ACCESSO</h1></div><div class="item"><div class="tabs"><button class="${mode==='login'?'active':''}" data-tab="login">Accedi</button><button class="${mode==='signup'?'active':''}" data-tab="signup">Registrati</button></div>${mode==='signup'?'<input id="an" placeholder="Nome e cognome">':''}<input id="ae" type="email" placeholder="Email"><input id="ap" type="password" placeholder="Password (min. 6 caratteri)"><button class="save" data-auth="${mode}">${mode==='login'?'ACCEDI':'CREA ACCOUNT'}</button><div class="muted" style="margin-top:10px">${mode==='signup'?'Se sei stato invitato usa la stessa email dell’invito.':'Accesso al database cloud CantiereAI.'}</div></div></div>`}
-function setPage(p){page=p;detail=null;nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));render()}
-function render(){
- if(!session)return login();
- if(detail)return siteDetail(detail);
- if(page==='home')return head(`<div class="grid"><div class="card"><div class="num">${sites.length}</div><div class="lab">CANTIERI VISIBILI</div></div><div class="card"><div class="num">${sites.filter(x=>manage(x.id)).length}</div><div class="lab">CANTIERI GESTITI</div></div></div><div class="section"><h3>IDENTITÀ CLOUD</h3><div class="item"><b>${esc(profile?.full_name||session.user.email)}</b><div class="muted">${esc(session.user.email)}</div><span class="pill ok">SYNC ATTIVO</span></div></div><div class="section"><h3>I TUOI CANTIERI</h3>${sites.map(s=>`<div class="item" data-site="${s.id}"><div class="k"><b>${esc(s.name)}</b><span class="job">${esc(s.job_number)}</span></div><div class="muted">${esc(s.client||'')}</div><div class="progress"><i style="width:${s.progress||0}%"></i></div><div class="muted">Ruolo: <span class="role">${esc(role(s.id))}</span></div></div>`).join('')||'<div class="empty">Nessun cantiere.</div>'}</div>`);
- if(page==='sites')return head(`<div class="section"><h3>CANTIERI CLOUD</h3>${sites.map(s=>`<div class="item"><div class="k"><b>${esc(s.name)}</b><span class="job">${esc(s.job_number)}</span></div><div class="muted">${esc(s.client||'')} · ${esc(s.address||'')}</div><div class="progress"><i style="width:${s.progress||0}%"></i></div><div class="row"><button class="mini" data-site="${s.id}">Apri</button>${manage(s.id)?`<button class="mini" data-team="${s.id}">TEAM ACCESS</button>`:''}</div></div>`).join('')||'<div class="empty">Premi + per creare il primo cantiere.</div>'}</div>`);
- if(page==='team')return teamPage();
- if(page==='profile')return head(`<div class="section"><h3>PROFILO CLOUD</h3><div class="item"><input id="pn" value="${esc(profile?.full_name||'')}" placeholder="Nome e cognome"><input value="${esc(session.user.email)}" disabled><button class="save" data-profile>SALVA</button><button class="ghost danger" data-logout>ESCI</button></div></div>`);
+const fmt=d=>d?new Intl.DateTimeFormat('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit'}).format(new Date(d)):'';
+const fmtFull=d=>d?new Intl.DateTimeFormat('it-IT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(d)):'';
+const uid=()=>crypto.randomUUID?.()||Date.now().toString(36)+Math.random().toString(36).slice(2);
+function msg(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2400)}
+function openSheet(title,html){sheetTitle.textContent=title;sheetBody.innerHTML=html;sheet.classList.add('open')}
+function closeSheet(){sheet.classList.remove('open')}
+function loading(){app.innerHTML='<div class="loading"><span class="spinner"></span><div style="margin-top:9px">SINCRONIZZAZIONE…</div></div>'}
+function header(content){app.innerHTML=`<header><div class="brand"><small>CONSTRUCTION OPERATING SYSTEM · ${VERSION}</small><h1>CANTIERE AI</h1></div><div class="core"></div></header><div class="hudline"></div>${content}`}
+function roleFor(id){return members.find(m=>m.site_id===id&&m.user_id===session?.user?.id)?.role||''}
+const canManage=id=>['Amministratore','Project Manager'].includes(roleFor(id));
+const canSupervise=id=>['Amministratore','Project Manager','Capocantiere'].includes(roleFor(id));
+const canContribute=id=>['Amministratore','Project Manager','Capocantiere','Montatore','Ufficio tecnico','Direzione lavori'].includes(roleFor(id));
+const canReport=id=>['Amministratore','Project Manager','Capocantiere'].includes(roleFor(id));
+const canPhoto=id=>['Amministratore','Project Manager','Capocantiere','Montatore','Ufficio tecnico'].includes(roleFor(id));
+const canDoc=id=>['Amministratore','Project Manager','Capocantiere','Ufficio tecnico'].includes(roleFor(id));
+
+window.addEventListener('online',()=>{net.textContent='ONLINE';net.classList.remove('off')});
+window.addEventListener('offline',()=>{net.textContent='OFFLINE';net.classList.add('off')});
+if(!navigator.onLine){net.textContent='OFFLINE';net.classList.add('off')}
+
+async function loadBase(){
+ const uid=session.user.id;
+ const [p,s,m,i]=await Promise.all([
+  sb.from('profiles').select('*').eq('id',uid).maybeSingle(),
+  sb.from('sites').select('*').order('created_at',{ascending:false}),
+  sb.from('site_members').select('*'),
+  sb.from('issues').select('id,site_id,title,details,priority,status,assigned_to,due_at,created_at').neq('status','Risolto').order('created_at',{ascending:false})
+ ]);
+ profile=p.data||{id:uid,email:session.user.email,full_name:session.user.user_metadata?.full_name||''};
+ sites=s.data||[];members=m.data||[];allIssues=i.data||[];
 }
-async function teamPage(){const ids=sites.filter(x=>manage(x.id)).map(x=>x.id);if(!ids.length)return head('<div class="empty">Non gestisci ancora nessun cantiere.</div>');let r=await supa.from('site_members').select('*').in('site_id',ids),rows=r.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};if(uids.length){let p=await supa.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}head(`<div class="section"><h3>TEAM DIRECTORY</h3>${rows.map(x=>{let p=pm[x.user_id]||{},s=sites.find(z=>z.id===x.site_id);return `<div class="item"><div class="k"><b>${esc(p.full_name||p.email||'Utente')}</b><span class="pill role">${esc(x.role)}</span></div><div class="muted">${esc(p.email||'')}</div><div class="job">${esc(s?.job_number||'')} · ${esc(s?.name||'')}</div></div>`}).join('')}</div>`) }
-async function siteDetail(id){let s=sites.find(x=>x.id===id);if(!s){detail=null;return render()}let [a,i]=await Promise.all([supa.from('activities').select('*').eq('site_id',id).order('created_at',{ascending:false}),supa.from('issues').select('*').eq('site_id',id).order('created_at',{ascending:false})]);head(`<button class="mini" data-back>← Cantieri</button><div class="section"><div class="item"><div class="job">COMMESSA ${esc(s.job_number)}</div><h2>${esc(s.name)}</h2><div class="muted">${esc(s.client||'')} · ${esc(s.address||'')}</div><div class="muted">Ruolo: <span class="role">${esc(role(id))}</span></div><div class="progress"><i style="width:${s.progress||0}%"></i></div></div></div><div class="section"><h3>AZIONI</h3><div class="grid"><button class="ghost" data-act="${id}">+ Attività</button><button class="ghost" data-issue="${id}">+ Problema</button>${manage(id)?`<button class="ghost" data-team="${id}">◉ Team Access</button><button class="ghost" data-edit="${id}">✎ Modifica</button>`:''}</div></div><div class="section"><h3>PROBLEMI</h3>${(i.data||[]).map(x=>`<div class="item"><b class="${x.status==='Risolto'?'ok':'danger'}">⚠ ${esc(x.title)}</b><div class="job">${esc(x.priority)}</div><div class="muted">${esc(x.details||'')}</div></div>`).join('')||'<div class="empty">Nessun problema.</div>'}</div><div class="section"><h3>ATTIVITÀ</h3>${(a.data||[]).map(x=>`<div class="item"><b>${esc(x.title)}</b><div class="muted">${esc(x.notes||'')}</div></div>`).join('')||'<div class="empty">Nessuna attività.</div>'}</div>`)}
-function siteForm(s=null){open(s?'MODIFICA CANTIERE':'NUOVO CANTIERE',`<input id="sj" placeholder="Numero commessa" value="${esc(s?.job_number||'')}"><input id="sn" placeholder="Nome cantiere" value="${esc(s?.name||'')}"><input id="sc" placeholder="Cliente" value="${esc(s?.client||'')}"><input id="sa" placeholder="Indirizzo" value="${esc(s?.address||'')}"><select id="ss"><option>Attivo</option><option>In pausa</option><option>Completato</option></select><input id="sp" type="number" min="0" max="100" value="${s?.progress||0}" placeholder="Avanzamento %"><textarea id="snotes" placeholder="Note">${esc(s?.notes||'')}</textarea><button class="save" data-savesite="${s?.id||''}">SALVA</button>`);if(s)document.getElementById('ss').value=s.status}
-async function teamAccess(id){let s=sites.find(x=>x.id===id),r=await supa.from('site_members').select('*').eq('site_id',id),rows=r.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};if(uids.length){let p=await supa.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}open('TEAM ACCESS',`<div class="item"><div class="job">${esc(s.job_number)}</div><b>${esc(s.name)}</b></div>${rows.map(x=>`<div class="item"><b>${esc(pm[x.user_id]?.full_name||pm[x.user_id]?.email||'Utente')}</b><div class="role">${esc(x.role)}</div></div>`).join('')}<button class="save" data-invite="${id}">+ INVITA UTENTE</button>`)}
-function inviteForm(id){open('INVITA UTENTE',`<input id="inviteName" placeholder="Nome e cognome"><input id="inviteEmail" type="email" placeholder="Email"><select id="inviteRole">${roles.map(x=>`<option>${x}</option>`).join('')}</select><input id="inviteSite" type="hidden" value="${id}"><button class="save" data-send>INVIA INVITO REALE</button><div class="muted" style="margin-top:10px">L'utente verrà associato a questa commessa con il ruolo scelto.</div>`)}
-nav.onclick=e=>{let b=e.target.closest('[data-p]');if(b)setPage(b.dataset.p)};plus.onclick=()=>siteForm();document.getElementById('close').onclick=close;sheet.onclick=e=>{if(e.target===sheet)close()};
-document.addEventListener('click',async e=>{
-let x=e.target.closest('[data-tab]');if(x)return login(x.dataset.tab);
-x=e.target.closest('[data-auth]');if(x){let email=document.getElementById('ae').value.trim(),password=document.getElementById('ap').value;if(!email||password.length<6)return msg('Controlla email e password');if(x.dataset.auth==='login'){let r=await supa.auth.signInWithPassword({email,password});if(r.error)return msg(r.error.message);session=r.data.session;await load();nav.style.display='flex';plus.style.display='block';render();msg('Accesso eseguito')}else{let full_name=document.getElementById('an').value.trim(),r=await supa.auth.signUp({email,password,options:{data:{full_name}}});if(r.error)return msg(r.error.message);if(r.data.session){session=r.data.session;await load();nav.style.display='flex';plus.style.display='block';render()}else login();msg(r.data.session?'Account creato':'Controlla la tua email')}return}
-x=e.target.closest('[data-site]');if(x){detail=x.dataset.site;return render()};if(e.target.closest('[data-back]')){detail=null;return setPage('sites')}
-x=e.target.closest('[data-team]');if(x)return teamAccess(x.dataset.team);x=e.target.closest('[data-invite]');if(x)return inviteForm(x.dataset.invite);
-x=e.target.closest('[data-edit]');if(x)return siteForm(sites.find(s=>s.id===x.dataset.edit));
-x=e.target.closest('[data-act]');if(x)return open('NUOVA ATTIVITÀ',`<input id="at" placeholder="Attività"><textarea id="anote" placeholder="Note"></textarea><input id="asid" type="hidden" value="${x.dataset.act}"><button class="save" data-saveact>SALVA</button>`);
-x=e.target.closest('[data-issue]');if(x)return open('NUOVO PROBLEMA',`<input id="it" placeholder="Problema"><select id="ip"><option>Bassa</option><option selected>Media</option><option>Alta</option><option>Critica</option></select><textarea id="idetail" placeholder="Dettagli"></textarea><input id="iid" type="hidden" value="${x.dataset.issue}"><button class="save" data-saveissue>SALVA</button>`);
-x=e.target.closest('[data-savesite]');if(x){let d={job_number:sj.value.trim(),name:sn.value.trim(),client:sc.value.trim(),address:sa.value.trim(),status:ss.value,progress:Math.max(0,Math.min(100,+sp.value||0)),notes:snotes.value.trim()};if(!d.job_number||!d.name)return msg('Commessa e nome obbligatori');let r=x.dataset.savesite?await supa.from('sites').update(d).eq('id',x.dataset.savesite):await supa.from('sites').insert({...d,created_by:session.user.id});if(r.error)return msg(r.error.message);close();await load();setPage('sites');return msg('Cantiere salvato')}
-if(e.target.closest('[data-send]')){let body={site_id:document.getElementById('inviteSite').value,email:document.getElementById('inviteEmail').value.trim(),role:document.getElementById('inviteRole').value,full_name:document.getElementById('inviteName').value.trim()};if(!body.email)return msg('Inserisci email');e.target.disabled=true;e.target.textContent='INVIO…';let r=await supa.functions.invoke('invite-site-user',{body});e.target.disabled=false;e.target.textContent='INVIA INVITO REALE';if(r.error||r.data?.error)return msg(r.data?.error||r.error.message);close();await load();render();return msg(r.data?.message||'Invito inviato')}
-if(e.target.closest('[data-saveact]')){let sid=asid.value,r=await supa.from('activities').insert({site_id:sid,title:at.value.trim(),notes:anote.value.trim(),created_by:session.user.id});if(r.error)return msg(r.error.message);close();detail=sid;render();return msg('Attività salvata')}
-if(e.target.closest('[data-saveissue]')){let sid=iid.value,r=await supa.from('issues').insert({site_id:sid,title:it.value.trim(),priority:ip.value,details:idetail.value.trim(),created_by:session.user.id});if(r.error)return msg(r.error.message);close();detail=sid;render();return msg('Problema salvato')}
-if(e.target.closest('[data-profile]')){let r=await supa.from('profiles').upsert({id:session.user.id,email:session.user.email,full_name:pn.value.trim()});if(r.error)return msg(r.error.message);await load();render();return msg('Profilo salvato')}
-if(e.target.closest('[data-logout]')){await supa.auth.signOut();session=null;login()}
+
+function showAuth(mode='login'){
+ nav.classList.add('hidden');fab.classList.add('hidden');
+ app.innerHTML=`<div class="login">
+  <div class="loginLogo"><img src="./app-icon-192.png"><small>CANTIEREAI CLOUD</small><h1>${mode==='login'?'ACCESSO':'REGISTRAZIONE'}</h1></div>
+  <div class="item">
+   <div class="tabsAuth"><button class="${mode==='login'?'active':''}" data-auth-tab="login">Accedi</button><button class="${mode==='signup'?'active':''}" data-auth-tab="signup">Registrati</button></div>
+   ${mode==='signup'?'<label class="flabel">Nome e cognome</label><input id="authName" autocomplete="name" placeholder="Nome e cognome">':''}
+   <label class="flabel">Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="nome@azienda.it">
+   <label class="flabel">Password</label><input id="authPassword" type="password" autocomplete="${mode==='login'?'current-password':'new-password'}" placeholder="Minimo 6 caratteri">
+   <button class="save" data-auth-action="${mode}">${mode==='login'?'ACCEDI':'CREA ACCOUNT'}</button>
+   <div class="muted" style="margin-top:11px">${mode==='signup'?'Se hai ricevuto un invito, registrati con la stessa email.':'I dati sono sincronizzati e protetti da permessi per singola commessa.'}</div>
+  </div></div>`;
+}
+
+async function setPage(p){
+ page=p;siteId=null;siteTab='overview';
+ nav.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('on',b.dataset.page===p));
+ await render();
+}
+async function render(){
+ if(!session)return showAuth();
+ nav.classList.remove('hidden');fab.classList.remove('hidden');
+ if(siteId)return renderSite();
+ if(page==='home')return renderHome();
+ if(page==='sites')return renderSites();
+ if(page==='ai')return renderAI();
+ if(page==='team')return renderTeam();
+ if(page==='profile')return renderProfile();
+}
+
+function renderHome(){
+ const critical=allIssues.filter(i=>i.priority==='Critica');
+ const high=allIssues.filter(i=>i.priority==='Alta');
+ const avg=sites.length?Math.round(sites.reduce((a,s)=>a+(Number(s.progress)||0),0)/sites.length):0;
+ const attention=[...critical,...high].slice(0,5);
+ header(`<div class="grid3">
+  <div class="card metric"><div class="num">${sites.length}</div><div class="lab">CANTIERI</div></div>
+  <div class="card metric"><div class="num">${allIssues.length}</div><div class="lab">PROBLEMI APERTI</div></div>
+  <div class="card metric"><div class="num">${avg}%</div><div class="lab">AVANZAMENTO MEDIO</div></div>
+ </div>
+ <div class="section"><h3>COMMAND CENTER</h3><div class="quick">
+  <button class="ghost" data-quick="site"><b>＋ Nuovo cantiere</b><div class="muted">Crea una nuova commessa</div></button>
+  <button class="ghost" data-quick="ai"><b>✦ Chiedi all'AI</b><div class="muted">Analizza tutti i cantieri</div></button>
+  <button class="ghost" data-quick="issue"><b>⚠ Segnala problema</b><div class="muted">Scegli la commessa</div></button>
+  <button class="ghost" data-quick="report"><b>▤ Report giornaliero</b><div class="muted">Registra la giornata</div></button>
+ </div></div>
+ <div class="section"><h3>RICHIEDE ATTENZIONE</h3>
+  ${attention.map(i=>{const s=sites.find(x=>x.id===i.site_id);return `<div class="item attention" data-open-site="${i.site_id}"><div class="spread"><b>${esc(i.title)}</b><span class="pill ${i.priority==='Critica'?'red':'orange'}">${esc(i.priority)}</span></div><div class="job">${esc(s?.job_number||'')} · ${esc(s?.name||'')}</div><div class="muted">${esc(i.details||'')}</div></div>`}).join('')||'<div class="empty">Nessuna criticità ad alta priorità.</div>'}
+ </div>
+ <div class="section"><h3>CANTIERI RECENTI</h3>
+ ${sites.slice(0,5).map(siteCard).join('')||'<div class="empty">Nessun cantiere. Premi + per iniziare.</div>'}</div>`);
+}
+function siteCard(s){
+ return `<div class="item" data-open-site="${s.id}">
+  <div class="spread"><div class="grow"><b>${esc(s.name)}</b><div class="job">${esc(s.job_number)}</div></div><span class="pill ${s.status==='Completato'?'green':s.status==='In pausa'?'orange':''}">${esc(s.status)}</span></div>
+  <div class="muted">${esc(s.client||'')}${s.address?' · '+esc(s.address):''}</div>
+  <div class="progress"><i style="width:${Number(s.progress)||0}%"></i></div>
+  <div class="spread" style="margin-top:8px"><span class="tiny">${Number(s.progress)||0}% completato</span><span class="tiny role">${esc(roleFor(s.id))}</span></div>
+ </div>`;
+}
+function renderSites(){
+ header(`<div class="section"><h3>CANTIERI</h3>
+  <div class="searchbar"><input id="siteSearch" placeholder="Cerca commessa, cantiere, cliente…"><select id="siteFilter"><option value="">Tutti</option><option>Attivo</option><option>In pausa</option><option>Completato</option></select></div>
+  <div id="siteList" style="margin-top:10px">${sites.map(siteCard).join('')||'<div class="empty">Nessun cantiere.</div>'}</div>
+ </div>`);
+}
+
+async function renderSite(){
+ const s=sites.find(x=>x.id===siteId);if(!s){siteId=null;return setPage('sites')}
+ header(`<div class="spread"><button class="mini noPrint" data-back-sites>← Cantieri</button><div class="rowBtns noPrint"><button class="mini" data-share-site="${s.id}">Condividi</button>${s.address?`<button class="mini" data-map="${esc(s.address)}">Mappa</button>`:''}</div></div>
+ <div class="section"><div class="item"><div class="spread"><div class="grow"><div class="job">COMMESSA ${esc(s.job_number)}</div><h2 style="margin:4px 0">${esc(s.name)}</h2></div><span class="pill">${esc(s.status)}</span></div><div class="muted">${esc(s.client||'')}${s.address?' · '+esc(s.address):''}</div><div class="progress"><i style="width:${Number(s.progress)||0}%"></i></div><div class="spread" style="margin-top:8px"><span class="tiny">${Number(s.progress)||0}%</span><span class="tiny role">${esc(roleFor(s.id))}</span></div></div></div>
+ <div class="siteTabs noPrint">
+  ${[['overview','PANORAMICA'],['activities','ATTIVITÀ'],['issues','PROBLEMI'],['files','FILE & FOTO'],['reports','REPORT'],['team','TEAM']].map(([v,l])=>`<button data-site-tab="${v}" class="${siteTab===v?'active':''}">${l}</button>`).join('')}
+ </div><div id="sitePane"><div class="loading"><span class="spinner"></span></div></div>`);
+ await renderSitePane(s);
+}
+
+async function renderSitePane(s){
+ const pane=el('sitePane');if(!pane)return;
+ if(siteTab==='overview'){
+  const [a,i,p,d,r]=await Promise.all([
+   sb.from('activities').select('*').eq('site_id',s.id).order('created_at',{ascending:false}).limit(4),
+   sb.from('issues').select('*').eq('site_id',s.id).order('created_at',{ascending:false}).limit(4),
+   sb.from('photos').select('*',{count:'exact',head:true}).eq('site_id',s.id),
+   sb.from('documents').select('*',{count:'exact',head:true}).eq('site_id',s.id),
+   sb.from('daily_reports').select('*',{count:'exact',head:true}).eq('site_id',s.id)
+  ]);
+  const open=(i.data||[]).filter(x=>x.status!=='Risolto');
+  pane.innerHTML=`<div class="grid3"><div class="card metric"><div class="num">${a.data?.length||0}</div><div class="lab">ATTIVITÀ RECENTI</div></div><div class="card metric"><div class="num">${open.length}</div><div class="lab">PROBLEMI APERTI</div></div><div class="card metric"><div class="num">${(p.count||0)+(d.count||0)}</div><div class="lab">FILE/FOTO</div></div></div>
+   <div class="section"><h3>AZIONI RAPIDE</h3><div class="quick">
+    ${canContribute(s.id)?`<button class="ghost" data-add-activity="${s.id}"><b>＋ Attività</b></button><button class="ghost" data-add-issue="${s.id}"><b>⚠ Problema</b></button>`:''}
+    ${canPhoto(s.id)?`<button class="ghost" data-upload-photo="${s.id}"><b>⌾ Foto cantiere</b></button>`:''}
+    ${canReport(s.id)?`<button class="ghost" data-add-report="${s.id}"><b>▤ Report giornaliero</b></button>`:''}
+    <button class="ghost" data-ai-site="${s.id}"><b>✦ Chiedi all'AI</b></button>
+    ${canManage(s.id)?`<button class="ghost" data-edit-site="${s.id}"><b>✎ Modifica cantiere</b></button>`:''}
+   </div></div>
+   <div class="section"><h3>ULTIMI PROBLEMI</h3>${(i.data||[]).map(issueCard).join('')||'<div class="empty">Nessun problema registrato.</div>'}</div>
+   <div class="section"><h3>ULTIME ATTIVITÀ</h3>${(a.data||[]).map(a=>`<div class="item"><b>${esc(a.title)}</b><div class="muted">${esc(a.notes||'')}</div><div class="tiny">${fmtFull(a.created_at)}</div></div>`).join('')||'<div class="empty">Nessuna attività.</div>'}</div>
+   <div class="notice" style="margin-top:16px">Report salvati: ${r.count||0}. Tutti i dati di questa scheda sono sincronizzati nel cloud e filtrati in base al tuo ruolo.</div>`;
+  return;
+ }
+ if(siteTab==='activities'){
+  const q=await sb.from('activities').select('*').eq('site_id',s.id).order('created_at',{ascending:false});
+  pane.innerHTML=`${canContribute(s.id)?`<button class="save" data-add-activity="${s.id}">＋ NUOVA ATTIVITÀ</button>`:''}<div class="section">${(q.data||[]).map(a=>`<div class="item"><div class="spread"><b>${esc(a.title)}</b><span class="tiny">${fmt(a.created_at)}</span></div><div class="muted">${esc(a.notes||'')}</div>${(a.created_by===session.user.id||canSupervise(s.id))?`<div class="rowBtns"><button class="mini danger" data-delete-activity="${a.id}">Elimina</button></div>`:''}</div>`).join('')||'<div class="empty">Nessuna attività.</div>'}</div>`;
+  return;
+ }
+ if(siteTab==='issues'){
+  const q=await sb.from('issues').select('*').eq('site_id',s.id).order('status',{ascending:true}).order('created_at',{ascending:false});
+  pane.innerHTML=`${canContribute(s.id)?`<button class="save" data-add-issue="${s.id}">⚠ NUOVO PROBLEMA</button>`:''}<div class="section">${(q.data||[]).map(issueCard).join('')||'<div class="empty">Nessun problema.</div>'}</div>`;
+  return;
+ }
+ if(siteTab==='files'){
+  const [p,d]=await Promise.all([sb.from('photos').select('*').eq('site_id',s.id).order('created_at',{ascending:false}),sb.from('documents').select('*').eq('site_id',s.id).order('created_at',{ascending:false})]);
+  const photos=p.data||[],docs=d.data||[];
+  const signed=await Promise.all(photos.slice(0,30).map(async x=>{const r=await sb.storage.from('site-files').createSignedUrl(x.storage_path,3600);return {...x,url:r.data?.signedUrl||''}}));
+  pane.innerHTML=`<div class="rowBtns">${canPhoto(s.id)?`<button class="save" style="width:auto;flex:1" data-upload-photo="${s.id}">⌾ SCATTA/CARICA FOTO</button>`:''}${canDoc(s.id)?`<button class="ghost" style="width:auto;flex:1" data-upload-doc="${s.id}">⇧ CARICA DOCUMENTO</button>`:''}</div>
+   <div class="section"><h3>FOTO</h3><div class="photoGrid">${signed.map(x=>`<div class="photo" data-open-file="${esc(x.storage_path)}">${x.url?`<img src="${x.url}" alt="">`:''}<span>${esc(x.caption||fmt(x.created_at))}</span></div>`).join('')}</div>${!signed.length?'<div class="empty">Nessuna foto.</div>':''}</div>
+   <div class="section"><h3>DOCUMENTI</h3>${docs.map(x=>`<div class="item fileRow" data-open-file="${esc(x.storage_path)}"><div class="fileIcon">DOC</div><div class="grow"><b>${esc(x.file_name)}</b><div class="muted">${esc(x.category)} · ${fmt(x.created_at)}</div></div><span>›</span></div>`).join('')||'<div class="empty">Nessun documento.</div>'}</div>`;
+  return;
+ }
+ if(siteTab==='reports'){
+  const q=await sb.from('daily_reports').select('*').eq('site_id',s.id).order('report_date',{ascending:false});
+  pane.innerHTML=`${canReport(s.id)?`<button class="save" data-add-report="${s.id}">▤ NUOVO REPORT GIORNALIERO</button>`:''}<div class="section">${(q.data||[]).map(r=>`<div class="item"><div class="spread"><b>Report ${fmt(r.report_date)}</b><span class="pill">${r.workers||0} operatori</span></div><div class="muted">${esc(r.summary||r.works||'')}</div><div class="rowBtns"><button class="mini" data-view-report="${r.id}">Apri</button>${(r.created_by===session.user.id||canSupervise(s.id))?`<button class="mini danger" data-delete-report="${r.id}">Elimina</button>`:''}</div></div>`).join('')||'<div class="empty">Nessun report.</div>'}</div>`;
+  return;
+ }
+ if(siteTab==='team'){
+  await renderSiteTeam(s,pane);return;
+ }
+}
+function issueCard(i){
+ return `<div class="item issueCard ${i.priority==='Critica'?'critical':''}" data-open-issue="${i.id}"><div class="spread"><b>${esc(i.title)}</b><span class="pill ${i.status==='Risolto'?'green':i.priority==='Critica'?'red':'orange'}">${esc(i.status==='Risolto'?'Risolto':i.priority)}</span></div><div class="muted">${esc(i.details||'')}</div><div class="tiny">${fmtFull(i.created_at)}${i.due_at?' · Scad. '+fmt(i.due_at):''}</div></div>`;
+}
+
+async function renderSiteTeam(s,pane){
+ const [m,inv]=await Promise.all([sb.from('site_members').select('*').eq('site_id',s.id),sb.from('invitations').select('*').eq('site_id',s.id).order('created_at',{ascending:false})]);
+ const rows=m.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};
+ if(uids.length){const p=await sb.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}
+ pane.innerHTML=`${canManage(s.id)?`<button class="save" data-invite-user="${s.id}">＋ INVITA UTENTE</button>`:''}<div class="section"><h3>MEMBRI</h3>${rows.map(r=>{const p=pm[r.user_id]||{};return `<div class="item userRow"><div class="avatar">${esc((p.full_name||p.email||'U')[0].toUpperCase())}</div><div class="grow"><b>${esc(p.full_name||p.email||'Utente')}</b><div class="muted">${esc(p.email||'')}</div><div class="role tiny">${esc(r.role)}</div></div>${canManage(s.id)&&r.user_id!==session.user.id?`<button class="mini" data-member-menu="${r.id}" data-member-role="${esc(r.role)}">Gestisci</button>`:''}</div>`}).join('')}</div>
+ ${canManage(s.id)?`<div class="section"><h3>INVITI</h3>${(inv.data||[]).map(x=>`<div class="item"><div class="spread"><b>${esc(x.email)}</b><span class="pill ${x.status==='accepted'?'green':'orange'}">${esc(x.status)}</span></div><div class="role tiny">${esc(x.role)}</div></div>`).join('')||'<div class="empty">Nessun invito pendente.</div>'}</div>`:''}`;
+}
+
+async function renderTeam(){
+ const managed=sites.filter(s=>canManage(s.id));
+ if(!managed.length)return header('<div class="section"><h3>TEAM</h3><div class="empty">Non gestisci ancora nessun cantiere.</div></div>');
+ const ids=managed.map(s=>s.id),q=await sb.from('site_members').select('*').in('site_id',ids),rows=q.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};
+ if(uids.length){const p=await sb.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}
+ const grouped={};rows.forEach(r=>{(grouped[r.user_id]??=[]).push(r)});
+ header(`<div class="section"><h3>TEAM DIRECTORY</h3>${Object.entries(grouped).map(([id,rs])=>{const p=pm[id]||{};return `<div class="item userRow"><div class="avatar">${esc((p.full_name||p.email||'U')[0].toUpperCase())}</div><div class="grow"><b>${esc(p.full_name||p.email||'Utente')}</b><div class="muted">${esc(p.email||'')}</div><div class="tiny">${rs.length} cantieri assegnati</div></div></div>${rs.map(r=>{const s=sites.find(x=>x.id===r.site_id);return `<div class="tiny" style="padding:0 16px 7px">${esc(s?.job_number||'')} · ${esc(s?.name||'')} — <span class="role">${esc(r.role)}</span></div>`}).join('')}`}).join('')}</div>`);
+}
+
+async function renderProfile(){
+ header(`<div class="section"><h3>PROFILO</h3><div class="item">
+  <label class="flabel">Nome e cognome</label><input id="profileName" value="${esc(profile?.full_name||'')}">
+  <label class="flabel">Email</label><input value="${esc(session.user.email||'')}" disabled>
+  <button class="save" data-save-profile>SALVA PROFILO</button><button class="ghost danger" data-logout>ESCI DALL'ACCOUNT</button>
+ </div></div>
+ <div class="section"><h3>SISTEMA</h3><div class="item"><div class="spread"><span>Versione</span><b>${VERSION}</b></div><div class="spread" style="margin-top:10px"><span>Cloud database</span><span class="ok">Connesso</span></div><div class="spread" style="margin-top:10px"><span>Permessi per commessa</span><span class="ok">Attivi</span></div><div class="spread" style="margin-top:10px"><span>AI Command</span><span class="role">Backend attivo</span></div></div></div>`);
+}
+
+async function renderAI(){
+ const opts=sites.map(s=>`<option value="${s.id}" ${aiSiteId===s.id?'selected':''}>${esc(s.job_number)} — ${esc(s.name)}</option>`).join('');
+ header(`<div class="card aiHero"><div class="job">AI COMMAND</div><h2 style="margin:5px 0">Assistente operativo</h2><div class="muted">Interroga cantieri, attività, problemi e report usando i dati a cui hai accesso.</div></div>
+ <div class="section"><label class="flabel">Contesto</label><select id="aiSite"><option value="">Tutti i miei cantieri</option>${opts}</select></div>
+ <div class="chips"><button data-ai-prompt="Quali sono le priorità di oggi?">Priorità oggi</button><button data-ai-prompt="Riassumi la situazione del cantiere.">Riassumi</button><button data-ai-prompt="Quali problemi critici o ad alta priorità sono ancora aperti?">Problemi critici</button><button data-ai-prompt="Cosa richiede attenzione e quali sono le prossime azioni?">Prossime azioni</button><button data-ai-prompt="Preparami una sintesi utile per il report giornaliero.">Bozza report</button></div>
+ <div class="section"><div id="chat" class="chat"><div class="loading"><span class="spinner"></span></div></div></div>
+ <div class="chatInput"><button class="iconBtn" id="voiceBtn" title="Dettatura">🎙</button><textarea id="aiInput" placeholder="Es. Riassumi il cantiere 2540 e dimmi cosa richiede attenzione…"></textarea><button class="save" style="width:58px;padding:0" id="aiSend">➤</button></div>`);
+ await loadAIHistory();
+}
+async function loadAIHistory(){
+ const chat=el('chat');if(!chat)return;
+ let q=sb.from('ai_messages').select('*').eq('user_id',session.user.id).order('created_at',{ascending:false}).limit(40);
+ if(aiSiteId)q=q.eq('site_id',aiSiteId);else q=q.is('site_id',null);
+ const r=await q,data=(r.data||[]).reverse();
+ chat.innerHTML=data.map(x=>`<div class="bubble ${x.role==='user'?'user':'ai'}">${esc(x.content)}</div>`).join('')||'<div class="empty">Scrivi una domanda oppure usa uno dei suggerimenti qui sopra.</div>';
+ chat.scrollTop=chat.scrollHeight;
+}
+
+function siteForm(s=null){
+ openSheet(s?'MODIFICA CANTIERE':'NUOVO CANTIERE',`
+ <label class="flabel">Numero commessa *</label><input id="fJob" value="${esc(s?.job_number||'')}" placeholder="Es. 2540">
+ <label class="flabel">Nome cantiere *</label><input id="fName" value="${esc(s?.name||'')}" placeholder="Nome progetto">
+ <label class="flabel">Cliente</label><input id="fClient" value="${esc(s?.client||'')}">
+ <label class="flabel">Indirizzo</label><input id="fAddress" value="${esc(s?.address||'')}" placeholder="Via, città">
+ <label class="flabel">Stato</label><select id="fStatus"><option>Attivo</option><option>In pausa</option><option>Completato</option></select>
+ <label class="flabel">Avanzamento %</label><input id="fProgress" type="number" min="0" max="100" value="${Number(s?.progress)||0}">
+ <label class="flabel">Note generali</label><textarea id="fNotes">${esc(s?.notes||'')}</textarea>
+ <button class="save" data-save-site="${s?.id||''}">SALVA CANTIERE</button>`);
+ if(s)el('fStatus').value=s.status||'Attivo';
+}
+function activityForm(id){openSheet('NUOVA ATTIVITÀ',`<label class="flabel">Attività *</label><input id="actTitle" placeholder="Descrizione breve"><label class="flabel">Note</label><textarea id="actNotes"></textarea><input id="actSite" type="hidden" value="${id}"><button class="save" data-save-activity>SALVA ATTIVITÀ</button>`)}
+async function issueForm(id){
+ const tm=await sb.from('site_members').select('*').eq('site_id',id),rows=tm.data||[],uids=[...new Set(rows.map(x=>x.user_id))],pm={};
+ if(uids.length){const p=await sb.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}
+ openSheet('NUOVO PROBLEMA',`<label class="flabel">Titolo *</label><input id="issueTitle"><label class="flabel">Priorità</label><select id="issuePriority"><option>Bassa</option><option selected>Media</option><option>Alta</option><option>Critica</option></select><label class="flabel">Responsabile</label><select id="issueAssigned"><option value="">Non assegnato</option>${rows.map(r=>`<option value="${r.user_id}">${esc(pm[r.user_id]?.full_name||pm[r.user_id]?.email||r.role)}</option>`).join('')}</select><label class="flabel">Scadenza</label><input id="issueDue" type="date"><label class="flabel">Dettagli</label><textarea id="issueDetails"></textarea><input id="issueSite" type="hidden" value="${id}"><button class="save" data-save-issue>SALVA PROBLEMA</button>`);
+}
+function reportForm(id){openSheet('REPORT GIORNALIERO',`<label class="flabel">Data</label><input id="repDate" type="date" value="${new Date().toISOString().slice(0,10)}"><div class="grid2"><div><label class="flabel">Operatori</label><input id="repWorkers" type="number" min="0" value="0"></div><div><label class="flabel">Ore complessive</label><input id="repHours" type="number" min="0" step=".5" value="0"></div></div><label class="flabel">Lavorazioni eseguite</label><textarea id="repWorks"></textarea><label class="flabel">Criticità / blocchi</label><textarea id="repBlockers"></textarea><label class="flabel">Riepilogo</label><textarea id="repSummary"></textarea><input id="repSite" type="hidden" value="${id}"><button class="save" data-save-report>SALVA REPORT</button>`)}
+function uploadPhotoForm(id){openSheet('FOTO CANTIERE',`<label class="flabel">Foto</label><input id="photoFile" type="file" accept="image/*" capture="environment"><label class="flabel">Descrizione</label><input id="photoCaption" placeholder="Es. posa facciata lato nord"><input id="photoSite" type="hidden" value="${id}"><button class="save" data-save-photo>CARICA FOTO</button><div class="muted" style="margin-top:9px">La foto viene salvata nello storage cloud della commessa.</div>`)}
+function uploadDocForm(id){openSheet('CARICA DOCUMENTO',`<label class="flabel">File</label><input id="docFile" type="file"><label class="flabel">Categoria</label><select id="docCategory"><option>Disegno</option><option>Verbale</option><option>Ordine</option><option>Certificato</option><option>Foto/Relazione</option><option>Altro</option></select><input id="docSite" type="hidden" value="${id}"><button class="save" data-save-doc>CARICA DOCUMENTO</button>`)}
+function inviteForm(id){openSheet('INVITA UTENTE',`<label class="flabel">Nome e cognome</label><input id="inviteName"><label class="flabel">Email *</label><input id="inviteEmail" type="email"><label class="flabel">Ruolo nel cantiere</label><select id="inviteRole">${roles.map(r=>`<option>${r}</option>`).join('')}</select><input id="inviteSite" type="hidden" value="${id}"><button class="save" data-send-invite>INVIA INVITO</button><div class="muted" style="margin-top:9px">L'accesso è limitato a questa commessa e al ruolo selezionato.</div>`)}
+function chooseSite(action){
+ const allowed=sites.filter(s=>action==='issue'?canContribute(s.id):action==='report'?canReport(s.id):true);
+ openSheet('SCEGLI CANTIERE',allowed.map(s=>`<button class="ghost" style="margin-top:7px" data-choose-site="${s.id}" data-choose-action="${action}"><b>${esc(s.job_number)}</b> · ${esc(s.name)}</button>`).join('')||'<div class="empty">Nessun cantiere disponibile.</div>');
+}
+
+async function issueDetail(id){
+ const q=await sb.from('issues').select('*').eq('id',id).single();if(q.error)return msg(q.error.message);const i=q.data,s=sites.find(x=>x.id===i.site_id);
+ const c=await sb.from('issue_comments').select('*').eq('issue_id',id).order('created_at',{ascending:true}),comments=c.data||[],uids=[...new Set(comments.map(x=>x.created_by))],pm={};
+ if(uids.length){const p=await sb.from('profiles').select('*').in('id',uids);(p.data||[]).forEach(x=>pm[x.id]=x)}
+ openSheet('DETTAGLIO PROBLEMA',`<div class="item issueCard ${i.priority==='Critica'?'critical':''}"><div class="spread"><b>${esc(i.title)}</b><span class="pill ${i.status==='Risolto'?'green':i.priority==='Critica'?'red':'orange'}">${esc(i.status)}</span></div><div class="job">${esc(s?.job_number||'')} · ${esc(i.priority)}</div><div class="muted">${esc(i.details||'')}</div>${i.due_at?`<div class="tiny">Scadenza: ${fmt(i.due_at)}</div>`:''}</div>
+ <div class="rowBtns">${canContribute(i.site_id)?`<button class="mini ${i.status==='Risolto'?'':'ok'}" data-toggle-issue="${i.id}" data-status="${i.status}">${i.status==='Risolto'?'Riapri':'✓ Risolvi'}</button>`:''}${(i.created_by===session.user.id||canSupervise(i.site_id))?`<button class="mini danger" data-delete-issue="${i.id}">Elimina</button>`:''}</div>
+ <div class="section"><h3>COMMENTI</h3>${comments.map(x=>`<div class="item"><b>${esc(pm[x.created_by]?.full_name||pm[x.created_by]?.email||'Utente')}</b><div class="muted">${esc(x.body)}</div><div class="tiny">${fmtFull(x.created_at)}</div></div>`).join('')||'<div class="empty">Nessun commento.</div>'}</div>
+ ${canContribute(i.site_id)?`<textarea id="commentBody" placeholder="Aggiungi un commento…"></textarea><button class="save" data-add-comment="${i.id}">INVIA COMMENTO</button>`:''}`);
+}
+
+async function reportDetail(id){
+ const q=await sb.from('daily_reports').select('*').eq('id',id).single();if(q.error)return msg(q.error.message);const r=q.data,s=sites.find(x=>x.id===r.site_id);
+ openSheet('REPORT '+fmt(r.report_date),`<div class="item"><div class="job">${esc(s?.job_number||'')} · ${esc(s?.name||'')}</div><h2 style="margin:5px 0">Report ${fmt(r.report_date)}</h2><div class="grid2"><div class="card metric"><div class="num">${r.workers||0}</div><div class="lab">OPERATORI</div></div><div class="card metric"><div class="num">${r.hours||0}</div><div class="lab">ORE</div></div></div><div class="section"><h3>LAVORAZIONI</h3><div class="muted">${esc(r.works||'-')}</div></div><div class="section"><h3>CRITICITÀ</h3><div class="muted">${esc(r.blockers||'-')}</div></div><div class="section"><h3>RIEPILOGO</h3><div class="muted">${esc(r.summary||'-')}</div></div></div><button class="save" data-print-report="${r.id}">CONDIVIDI / STAMPA PDF</button>`);
+}
+
+async function printReport(id){
+ const w=window.open('','_blank');if(!w)return msg('Consenti l’apertura della finestra per il report');
+ const q=await sb.from('daily_reports').select('*').eq('id',id).single();if(q.error){w.close();return msg(q.error.message)}const r=q.data,s=sites.find(x=>x.id===r.site_id);
+ w.document.write(`<!doctype html><html><head><meta name="viewport" content="width=device-width"><title>Report ${esc(s?.job_number||'')}</title><style>body{font-family:-apple-system,Arial;padding:28px;color:#111}h1{margin-bottom:4px}.meta{color:#555;margin-bottom:25px}.box{border:1px solid #ddd;border-radius:12px;padding:15px;margin:12px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.big{font-size:32px;font-weight:800}@media print{button{display:none}}</style></head><body><h1>CantiereAI — Report giornaliero</h1><div class="meta">Commessa ${esc(s?.job_number||'')} · ${esc(s?.name||'')} · ${fmt(r.report_date)}</div><div class="grid"><div class="box"><div class="big">${r.workers||0}</div>Operatori</div><div class="box"><div class="big">${r.hours||0}</div>Ore complessive</div></div><div class="box"><h3>Lavorazioni eseguite</h3>${esc(r.works||'-')}</div><div class="box"><h3>Criticità / blocchi</h3>${esc(r.blockers||'-')}</div><div class="box"><h3>Riepilogo</h3>${esc(r.summary||'-')}</div><button onclick="window.print()">Stampa / Salva PDF</button></body></html>`);w.document.close();
+}
+
+async function openStorage(path){
+ const r=await sb.storage.from('site-files').createSignedUrl(path,3600);if(r.error)return msg(r.error.message);window.open(r.data.signedUrl,'_blank');
+}
+async function sendAI(){
+ const input=el('aiInput');if(!input||busy)return;const text=input.value.trim();if(!text)return;busy=true;input.value='';
+ const chat=el('chat');if(chat){if(chat.querySelector('.empty'))chat.innerHTML='';chat.insertAdjacentHTML('beforeend',`<div class="bubble user">${esc(text)}</div><div class="bubble ai" id="thinking"><span class="spinner"></span> Analisi in corso…</div>`);chat.scrollTop=chat.scrollHeight}
+ const r=await sb.functions.invoke('cantiere-ai',{body:{message:text,site_id:aiSiteId||null}});
+ busy=false;el('thinking')?.remove();
+ if(r.error||r.data?.error){msg(r.data?.error||r.error.message);return}
+ chat?.insertAdjacentHTML('beforeend',`<div class="bubble ai">${esc(r.data.answer)}${r.data.mode==='fallback'?'<div class="tiny" style="margin-top:6px">Modalità analisi locale backend</div>':''}</div>`);if(chat)chat.scrollTop=chat.scrollHeight;
+}
+function startVoice(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return msg('Dettatura vocale non disponibile su questo browser');
+ const rec=new SR();rec.lang='it-IT';rec.interimResults=false;rec.maxAlternatives=1;const b=el('voiceBtn');if(b)b.textContent='●';
+ rec.onresult=e=>{if(el('aiInput'))el('aiInput').value=e.results[0][0].transcript};rec.onerror=()=>msg('Non riesco ad ascoltare');rec.onend=()=>{if(b)b.textContent='🎙'};rec.start();
+}
+
+nav.addEventListener('click',async e=>{const b=e.target.closest('[data-page]');if(b)await setPage(b.dataset.page)});
+fab.addEventListener('click',()=>{if(page==='sites'||page==='home')siteForm();else if(page==='ai')el('aiInput')?.focus();else if(page==='team'){const s=sites.find(x=>canManage(x.id));s?inviteForm(s.id):msg('Nessun cantiere gestibile')}else siteForm()});
+el('sheetClose').onclick=closeSheet;sheet.addEventListener('click',e=>{if(e.target===sheet)closeSheet()});
+
+document.addEventListener('input',e=>{
+ if(e.target.id==='siteSearch'||e.target.id==='siteFilter'){
+  const q=(el('siteSearch')?.value||'').toLowerCase(),f=el('siteFilter')?.value||'';
+  const filtered=sites.filter(s=>(!f||s.status===f)&&(!q||[s.job_number,s.name,s.client,s.address].some(v=>String(v||'').toLowerCase().includes(q))));
+  const l=el('siteList');if(l)l.innerHTML=filtered.map(siteCard).join('')||'<div class="empty">Nessun risultato.</div>';
+ }
 });
-let gs=await supa.auth.getSession();session=gs.data.session;if(session){nav.style.display='flex';plus.style.display='block';await load();render()}else login();
+document.addEventListener('change',async e=>{if(e.target.id==='aiSite'){aiSiteId=e.target.value;await loadAIHistory()}});
+
+document.addEventListener('click',async e=>{
+ let x=e.target.closest('[data-auth-tab]');if(x)return showAuth(x.dataset.authTab);
+ x=e.target.closest('[data-auth-action]');if(x){
+  const email=el('authEmail').value.trim(),password=el('authPassword').value;if(!email||password.length<6)return msg('Controlla email e password');
+  if(x.dataset.authAction==='login'){const r=await sb.auth.signInWithPassword({email,password});if(r.error)return msg(r.error.message);session=r.data.session;loading();await loadBase();nav.classList.remove('hidden');fab.classList.remove('hidden');await render();return msg('Accesso eseguito')}
+  const full_name=el('authName').value.trim(),r=await sb.auth.signUp({email,password,options:{data:{full_name}}});if(r.error)return msg(r.error.message);if(r.data.session){session=r.data.session;await loadBase();await render()}else showAuth('login');return msg(r.data.session?'Account creato':'Controlla la tua email');
+ }
+ x=e.target.closest('[data-open-site]');if(x){siteId=x.dataset.openSite;siteTab='overview';return render()}
+ if(e.target.closest('[data-back-sites]')){siteId=null;return setPage('sites')}
+ x=e.target.closest('[data-site-tab]');if(x){siteTab=x.dataset.siteTab;return renderSite()}
+ x=e.target.closest('[data-quick]');if(x){if(x.dataset.quick==='site')return siteForm();if(x.dataset.quick==='ai')return setPage('ai');if(x.dataset.quick==='issue')return chooseSite('issue');if(x.dataset.quick==='report')return chooseSite('report')}
+ x=e.target.closest('[data-choose-site]');if(x){const id=x.dataset.chooseSite,a=x.dataset.chooseAction;closeSheet();return a==='issue'?issueForm(id):reportForm(id)}
+ x=e.target.closest('[data-edit-site]');if(x)return siteForm(sites.find(s=>s.id===x.dataset.editSite));
+ x=e.target.closest('[data-add-activity]');if(x)return activityForm(x.dataset.addActivity);
+ x=e.target.closest('[data-add-issue]');if(x)return issueForm(x.dataset.addIssue);
+ x=e.target.closest('[data-add-report]');if(x)return reportForm(x.dataset.addReport);
+ x=e.target.closest('[data-upload-photo]');if(x)return uploadPhotoForm(x.dataset.uploadPhoto);
+ x=e.target.closest('[data-upload-doc]');if(x)return uploadDocForm(x.dataset.uploadDoc);
+ x=e.target.closest('[data-invite-user]');if(x)return inviteForm(x.dataset.inviteUser);
+ x=e.target.closest('[data-open-issue]');if(x)return issueDetail(x.dataset.openIssue);
+ x=e.target.closest('[data-view-report]');if(x)return reportDetail(x.dataset.viewReport);
+ x=e.target.closest('[data-open-file]');if(x)return openStorage(x.dataset.openFile);
+ x=e.target.closest('[data-map]');if(x){window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(x.dataset.map),'_blank');return}
+ x=e.target.closest('[data-share-site]');if(x){const s=sites.find(z=>z.id===x.dataset.shareSite),text=`CantiereAI — ${s?.job_number||''} ${s?.name||''}\n${APP_URL}?site=${x.dataset.shareSite}`;try{if(navigator.share)await navigator.share({title:'CantiereAI',text});else{await navigator.clipboard.writeText(text);msg('Link copiato')}}catch{}return}
+ x=e.target.closest('[data-ai-site]');if(x){aiSiteId=x.dataset.aiSite;siteId=null;return setPage('ai')}
+ x=e.target.closest('[data-ai-prompt]');if(x){el('aiInput').value=x.dataset.aiPrompt;return sendAI()}
+ if(e.target.id==='aiSend')return sendAI();if(e.target.id==='voiceBtn')return startVoice();
+
+ x=e.target.closest('[data-save-site]');if(x){
+  const data={job_number:el('fJob').value.trim(),name:el('fName').value.trim(),client:el('fClient').value.trim(),address:el('fAddress').value.trim(),status:el('fStatus').value,progress:Math.max(0,Math.min(100,Number(el('fProgress').value)||0)),notes:el('fNotes').value.trim()};if(!data.job_number||!data.name)return msg('Commessa e nome sono obbligatori');
+  const r=x.dataset.saveSite?await sb.from('sites').update(data).eq('id',x.dataset.saveSite):await sb.from('sites').insert({...data,created_by:session.user.id});if(r.error)return msg(r.error.message);closeSheet();await loadBase();siteId=x.dataset.saveSite||null;await (siteId?render():setPage('sites'));return msg('Cantiere salvato');
+ }
+ if(e.target.closest('[data-save-activity]')){
+  const sid=el('actSite').value,title=el('actTitle').value.trim();if(!title)return msg('Inserisci l’attività');const r=await sb.from('activities').insert({site_id:sid,title,notes:el('actNotes').value.trim(),created_by:session.user.id});if(r.error)return msg(r.error.message);closeSheet();siteId=sid;siteTab='activities';await render();return msg('Attività salvata');
+ }
+ if(e.target.closest('[data-save-issue]')){
+  const sid=el('issueSite').value,title=el('issueTitle').value.trim();if(!title)return msg('Inserisci il titolo');const assigned=el('issueAssigned').value||null,due=el('issueDue').value||null;const r=await sb.from('issues').insert({site_id:sid,title,priority:el('issuePriority').value,details:el('issueDetails').value.trim(),assigned_to:assigned,due_at:due,created_by:session.user.id});if(r.error)return msg(r.error.message);closeSheet();await loadBase();siteId=sid;siteTab='issues';await render();return msg('Problema registrato');
+ }
+ x=e.target.closest('[data-toggle-issue]');if(x){const status=x.dataset.status==='Risolto'?'Aperto':'Risolto',r=await sb.from('issues').update({status}).eq('id',x.dataset.toggleIssue);if(r.error)return msg(r.error.message);closeSheet();await loadBase();await render();return msg(status==='Risolto'?'Problema risolto':'Problema riaperto')}
+ x=e.target.closest('[data-delete-issue]');if(x){if(!confirm('Eliminare definitivamente il problema?'))return;const r=await sb.from('issues').delete().eq('id',x.dataset.deleteIssue);if(r.error)return msg(r.error.message);closeSheet();await loadBase();await render();return msg('Problema eliminato')}
+ x=e.target.closest('[data-add-comment]');if(x){const body=el('commentBody').value.trim();if(!body)return;const r=await sb.from('issue_comments').insert({issue_id:x.dataset.addComment,body,created_by:session.user.id});if(r.error)return msg(r.error.message);return issueDetail(x.dataset.addComment)}
+ x=e.target.closest('[data-delete-activity]');if(x){if(!confirm('Eliminare questa attività?'))return;const r=await sb.from('activities').delete().eq('id',x.dataset.deleteActivity);if(r.error)return msg(r.error.message);return renderSite()}
+ if(e.target.closest('[data-save-report]')){const sid=el('repSite').value,r=await sb.from('daily_reports').insert({site_id:sid,report_date:el('repDate').value,workers:Number(el('repWorkers').value)||0,hours:Number(el('repHours').value)||0,works:el('repWorks').value.trim(),blockers:el('repBlockers').value.trim(),summary:el('repSummary').value.trim(),created_by:session.user.id});if(r.error)return msg(r.error.message);closeSheet();siteId=sid;siteTab='reports';await render();return msg('Report salvato')}
+ x=e.target.closest('[data-delete-report]');if(x){if(!confirm('Eliminare questo report?'))return;const r=await sb.from('daily_reports').delete().eq('id',x.dataset.deleteReport);if(r.error)return msg(r.error.message);return renderSite()}
+ x=e.target.closest('[data-print-report]');if(x)return printReport(x.dataset.printReport);
+ if(e.target.closest('[data-save-photo]')){const file=el('photoFile').files[0],sid=el('photoSite').value;if(!file)return msg('Seleziona una foto');e.target.disabled=true;e.target.textContent='CARICAMENTO…';const ext=(file.name.split('.').pop()||'jpg').toLowerCase(),path=`${sid}/photos/${Date.now()}-${uid()}.${ext}`,up=await sb.storage.from('site-files').upload(path,file,{contentType:file.type||'image/jpeg'});if(up.error){e.target.disabled=false;return msg(up.error.message)}const db=await sb.from('photos').insert({site_id:sid,storage_path:path,caption:el('photoCaption').value.trim(),created_by:session.user.id});if(db.error)return msg(db.error.message);closeSheet();siteId=sid;siteTab='files';await render();return msg('Foto caricata')}
+ if(e.target.closest('[data-save-doc]')){const file=el('docFile').files[0],sid=el('docSite').value;if(!file)return msg('Seleziona un file');e.target.disabled=true;e.target.textContent='CARICAMENTO…';const clean=file.name.replace(/[^\w.\-]+/g,'_'),path=`${sid}/documents/${Date.now()}-${uid()}-${clean}`,up=await sb.storage.from('site-files').upload(path,file,{contentType:file.type||'application/octet-stream'});if(up.error){e.target.disabled=false;return msg(up.error.message)}const db=await sb.from('documents').insert({site_id:sid,storage_path:path,file_name:file.name,mime_type:file.type,category:el('docCategory').value,created_by:session.user.id});if(db.error)return msg(db.error.message);closeSheet();siteId=sid;siteTab='files';await render();return msg('Documento caricato')}
+ if(e.target.closest('[data-send-invite]')){const body={site_id:el('inviteSite').value,email:el('inviteEmail').value.trim(),role:el('inviteRole').value,full_name:el('inviteName').value.trim()};if(!body.email)return msg('Inserisci email');e.target.disabled=true;e.target.textContent='INVIO…';const r=await sb.functions.invoke('invite-site-user',{body});e.target.disabled=false;e.target.textContent='INVIA INVITO';if(r.error||r.data?.error)return msg(r.data?.error||r.error.message);closeSheet();return msg(r.data?.message||'Invito inviato')}
+ x=e.target.closest('[data-member-menu]');if(x){openSheet('GESTISCI ACCESSO',`<select id="memberRole">${roles.map(r=>`<option ${r===x.dataset.memberRole?'selected':''}>${r}</option>`).join('')}</select><input type="hidden" id="memberId" value="${x.dataset.memberMenu}"><button class="save" data-save-member-role>SALVA RUOLO</button><button class="ghost danger" data-remove-member>RIMUOVI DAL CANTIERE</button>`);return}
+ if(e.target.closest('[data-save-member-role]')){const r=await sb.from('site_members').update({role:el('memberRole').value}).eq('id',el('memberId').value);if(r.error)return msg(r.error.message);closeSheet();await loadBase();return renderSite()}
+ if(e.target.closest('[data-remove-member]')){if(!confirm('Rimuovere l’accesso a questo cantiere?'))return;const r=await sb.from('site_members').delete().eq('id',el('memberId').value);if(r.error)return msg(r.error.message);closeSheet();await loadBase();return renderSite()}
+ if(e.target.closest('[data-save-profile]')){const name=el('profileName').value.trim(),r=await sb.from('profiles').upsert({id:session.user.id,email:session.user.email,full_name:name});if(r.error)return msg(r.error.message);await sb.auth.updateUser({data:{full_name:name}});await loadBase();await render();return msg('Profilo salvato')}
+ if(e.target.closest('[data-logout]')){await sb.auth.signOut();session=null;profile=null;sites=[];members=[];allIssues=[];return showAuth()}
+});
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='aiInput'&&!e.shiftKey){e.preventDefault();sendAI()}});
+
+window.addEventListener('error',e=>{console.error(e.error||e.message);if(!session&&app.textContent.includes('AVVIO'))app.innerHTML='<div class="notice">Errore di avvio. Ricarica la pagina; se continua, verifica la connessione internet.</div>'});
+
+const gs=await sb.auth.getSession();session=gs.data.session;
+if(session){await loadBase();const requested=new URLSearchParams(location.search).get('site');if(requested&&sites.some(s=>s.id===requested))siteId=requested;await render()}else showAuth();
+
+sb.auth.onAuthStateChange(async(event,s)=>{if(s&&(!session||s.user.id!==session.user.id)){session=s;await loadBase();await render()}if(event==='SIGNED_OUT'){session=null;showAuth()}});
+
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(console.warn)}
 })();
-</script></body></html>
+</script>
+</body>
+</html>

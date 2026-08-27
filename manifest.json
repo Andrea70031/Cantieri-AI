@@ -1,8 +1,27 @@
 {
-  "name":"CantiereAI",
-  "short_name":"CantiereAI",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#071017",
-  "theme_color":"#071017"
+  "name": "CantiereAI",
+  "short_name": "CantiereAI",
+  "description": "Construction Operating System con gestione cantieri, team e AI.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071017",
+  "theme_color": "#071017",
+  "icons": [
+    {
+      "src": "app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "app-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
 }
